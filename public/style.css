@@ -444,7 +444,7 @@ main {
     background: white;
     border: 1px solid var(--line);
     border-radius: 18px;
-    padding: 24px 24px 24px 88px; /* Tamang espasyo sa kaliwa para sa icon box */
+    padding: 24px 24px 24px 90px; /* Pinalaki ang kaliwang padding para sa mas malaking icon box */
     box-shadow: var(--shadow);
     transition: transform .2s ease, box-shadow .2s ease;
 }
@@ -474,8 +474,8 @@ main {
     left: 18px;
     top: 50%;
     transform: translateY(-50%);
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -485,12 +485,13 @@ main {
     overflow: hidden;
 }
 
-/* Ginawa nating sakto at fit ang mismong PNG icon sa loob ng kahon */
+/* Para sakupin at lumitaw nang sakto ang iyong PNG icon sa loob */
 .stat-ic .stat-img-icon {
     width: 100%;
     height: 100%;
     object-fit: contain;
     display: block;
+    padding: 6px; /* Nagbibigay ng breathing room sa icon */
     padding: 6px; /* Nagbibigay ng magandang breathing room sa loob ng frame */
 }
 .stat span {
