@@ -1949,10 +1949,23 @@ header small {
     background: var(--gold);
 }
 
-/* FIX MOBILE LOGIN LAYOUT */
+
+/* FINAL FIX: Keep hidden views hidden on mobile and desktop */
+#loginView[hidden],
+#appView[hidden] {
+    display: none !important;
+}
+
+#loginView:not([hidden]) {
+    display: grid !important;
+}
+
+#appView:not([hidden]) {
+    display: block !important;
+}
+
 @media screen and (max-width: 680px) {
-    #loginView.auth-shell {
-        display: grid !important;
+    #loginView:not([hidden]) {
         grid-template-columns: minmax(0, 1fr) !important;
         width: 100% !important;
         min-width: 0 !important;
@@ -1961,62 +1974,22 @@ header small {
         overflow-x: hidden;
     }
 
-    #loginView .auth-aside {
+    #loginView:not([hidden]) .auth-aside {
         display: none !important;
     }
 
-    #loginView .auth-main {
-        grid-column: 1 / -1 !important;
+    #loginView:not([hidden]) .auth-main {
         width: 100% !important;
         min-width: 0 !important;
-        padding: 24px 20px !important;
         box-sizing: border-box;
     }
 
-    #loginView .auth-card,
-    #loginView .login-card {
+    #appView:not([hidden]) {
         width: 100% !important;
-        max-width: 460px !important;
         min-width: 0 !important;
-        margin: 0 auto !important;
-        box-sizing: border-box;
-    }
-
-    #loginView .auth-card h2 {
-        font-size: clamp(26px, 7vw, 34px) !important;
-        line-height: 1.2;
-        overflow-wrap: break-word;
-        word-break: normal;
-    }
-
-    #loginView .auth-tabs {
-        display: flex;
-        width: 100%;
-        gap: 6px;
-    }
-
-    #loginView .auth-tab {
-        flex: 1 1 0;
-        min-width: 0;
-        padding: 12px 8px;
-        white-space: normal;
-        overflow-wrap: break-word;
-    }
-
-    #loginView input {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        box-sizing: border-box;
-    }
-
-    #loginView .auth-mobile-logo {
-        display: block !important;
-        width: 140px;
-        max-width: 60%;
-        height: auto;
-        margin: 0 auto 24px;
-        object-fit: contain;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow-x: hidden;
     }
 }
 

@@ -29,18 +29,33 @@ let activeCertificate = null;
 // VIEW MANAGEMENT
 // ==========================================
 
+
 function showLogin() {
-    loginView.hidden = false;
-    loginView.style.display = "grid";
+    if (!loginView || !appView) return;
+
+    // Hide dashboard first.
     appView.hidden = true;
     appView.style.display = "none";
+
+    // Then show login.
+    loginView.hidden = false;
+    loginView.style.display = "grid";
+
+    window.scrollTo(0, 0);
 }
 
 function showDashboard() {
+    if (!loginView || !appView) return;
+
+    // Hide login completely.
     loginView.hidden = true;
     loginView.style.display = "none";
+
+    // Then show dashboard.
     appView.hidden = false;
     appView.style.display = "block";
+
+    window.scrollTo(0, 0);
 }
 
 // ==========================================
