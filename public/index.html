@@ -1577,9 +1577,7 @@ header small {
     .auth-main {
         min-height: 100vh;
         min-height: 100dvh;
-        padding:
-            24px
-            16px;
+        padding: 24px 16px;
     }
 
     .auth-mobile-logo {
@@ -1595,14 +1593,12 @@ header small {
     }
 
     .login-card {
-        padding:
-            clamp(20px, 6vw, 30px);
+        padding: clamp(20px, 6vw, 30px);
     }
 
     .auth-card h2,
     .admin-auth-card h1 {
-        font-size:
-            clamp(24px, 7vw, 31px);
+        font-size: clamp(24px, 7vw, 31px);
         overflow-wrap: anywhere;
     }
 
@@ -1611,9 +1607,7 @@ header small {
     }
 
     .auth-tab {
-        padding:
-            11px
-            6px;
+        padding: 11px 6px;
     }
 
     /* ---------- HEADER ---------- */
@@ -1621,13 +1615,15 @@ header small {
     header {
         position: relative;
         align-items: center;
-        padding:
-            12px
-            14px;
+        padding: 12px 14px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
     }
 
     header > div:first-child {
-        flex: 1 1 100%;
+        width: 100%;
+        justify-content: flex-start;
     }
 
     header > div:last-child {
@@ -1635,7 +1631,9 @@ header small {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 8px;
+        gap: 10px;
+        border-top: 1px solid var(--line);
+        padding-top: 10px;
     }
 
     .header-logo {
@@ -1655,25 +1653,36 @@ header small {
 
     .user-chip {
         margin-right: 0;
+        flex: 1;
         min-width: 0;
+        overflow: hidden;
     }
 
     .user-chip .who {
         display: block;
+        min-width: 0;
     }
 
     .user-chip .who b {
-        max-width: 42vw;
+        max-width: 35vw;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    #logout {
+        flex-shrink: 0;
+        padding: 8px 14px;
+        font-size: 13px;
+        background: #f0ece7;
+        border-radius: 8px;
     }
 
     /* ---------- MAIN ---------- */
 
     main {
-        width:
-            calc(100% - 24px);
-        margin:
-            18px
-            auto;
+        width: calc(100% - 24px);
+        margin: 18px auto;
     }
 
     /* ---------- WELCOME ---------- */
@@ -1686,8 +1695,7 @@ header small {
     }
 
     .welcome h1 {
-        font-size:
-            clamp(25px, 7vw, 34px);
+        font-size: clamp(25px, 7vw, 34px);
         overflow-wrap: anywhere;
     }
 
@@ -1698,9 +1706,7 @@ header small {
     /* ---------- STATISTICS ---------- */
 
     .stats {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
     }
 
@@ -1719,9 +1725,7 @@ header small {
     }
 
     .stat strong {
-        font-size:
-            clamp(21px, 6vw, 28px);
-
+        font-size: clamp(21px, 6vw, 28px);
         overflow-wrap: anywhere;
     }
 
@@ -1766,8 +1770,7 @@ header small {
     /* ---------- AI PANEL ---------- */
 
     .ai-panel {
-        grid-template-columns:
-            minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .ai-panel > button {
@@ -1777,8 +1780,7 @@ header small {
     /* ---------- FORMS ---------- */
 
     .form-grid {
-        grid-template-columns:
-            minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr);
         gap: 0;
     }
 
@@ -1789,15 +1791,9 @@ header small {
     /* ---------- DIALOG ---------- */
 
     dialog {
-        width:
-            calc(100vw - 20px);
-
-        max-width:
-            calc(100vw - 20px);
-
-        max-height:
-            calc(100dvh - 20px);
-
+        width: calc(100vw - 20px);
+        max-width: calc(100vw - 20px);
+        max-height: calc(100dvh - 20px);
         padding: 16px;
         border-radius: 16px;
     }
@@ -1809,9 +1805,7 @@ header small {
     .dialog-actions,
     .certificate-actions {
         display: grid;
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
     }
 
@@ -1824,8 +1818,7 @@ header small {
     /* ---------- CERTIFICATE ---------- */
 
     .certificate-upload {
-        grid-template-columns:
-            minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .certificate-design {
@@ -2104,20 +2097,26 @@ header small {
             </div>
             <button type="button" id="newRecord" class="primary">＋ Add record</button>
         </section>
-
-        <div class="stats">
+<div class="stats">
             <div class="stat">
-                <span class="stat-ic">✦</span>
+                <span class="stat-ic">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2z"/><polyline points="9 10 12 13 16 9"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                </span>
                 <span>Total records</span>
                 <strong id="total" data-target="0">0</strong>
             </div>
+
             <div class="stat">
-                <span class="stat-ic">❖</span>
+                <span class="stat-ic">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </span>
                 <span>Baptisms this year</span>
                 <strong id="thisYear" data-target="0">0</strong>
             </div>
             <div class="stat">
-                <span class="stat-ic">✧</span>
+                <span class="stat-ic">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </span>
                 <span>Latest baptism date</span>
                 <strong id="latest">—</strong>
             </div>
