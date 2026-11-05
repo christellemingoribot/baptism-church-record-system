@@ -1,0 +1,552 @@
+
+/* ==========================================
+   MODERN BAPTISMAL CERTIFICATE GENERATOR
+   Elegant Burgundy & Gold Theme
+========================================== */
+
+:root {
+    --cert-brand: #762c36;
+    --cert-brand-dark: #4e1723;
+    --cert-brand-light: #a64d58;
+
+    --cert-gold: #c6a15b;
+    --cert-gold-light: #e8d5a5;
+    --cert-gold-dark: #98733b;
+
+    --cert-ink: #30231f;
+    --cert-paper: #fffdf7;
+    --cert-muted: #766b60;
+    --cert-white: #ffffff;
+}
+
+/* ==========================================
+   CERTIFICATE DIALOG
+========================================== */
+
+.certificate-dialog {
+    width: min(97vw, 1250px);
+    max-width: 1250px;
+    max-height: 96vh;
+    padding: 28px;
+    border: 1px solid #e7d9c1;
+    border-radius: 22px;
+    overflow-y: auto;
+    background: #fffefa;
+    box-shadow: 0 25px 80px rgba(35, 20, 15, 0.25);
+}
+
+.certificate-dialog::backdrop {
+    background: rgba(25, 18, 20, 0.78);
+    backdrop-filter: blur(5px);
+}
+
+/* ==========================================
+   CERTIFICATE TOOLS
+========================================== */
+
+.certificate-tools {
+    margin-bottom: 18px;
+    padding: 18px;
+    background: #faf6ef;
+    border: 1px solid #eee2cf;
+    border-radius: 14px;
+}
+
+.certificate-upload {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px 16px;
+    align-items: end;
+    margin: 14px 0 20px;
+}
+
+.certificate-upload label {
+    margin: 0;
+    color: var(--cert-brand-dark);
+    font-weight: 700;
+}
+
+.certificate-upload input {
+    padding: 11px 13px;
+    border: 1px solid #ddcfba;
+    border-radius: 9px;
+    background: white;
+    color: var(--cert-ink);
+}
+
+.certificate-upload input:focus {
+    outline: 2px solid var(--cert-gold);
+    border-color: var(--cert-gold);
+}
+
+.certificate-upload small {
+    grid-column: 1 / -1;
+    color: var(--cert-muted);
+    font-size: 12px;
+}
+
+/* ==========================================
+   CERTIFICATE PREVIEW AREA
+========================================== */
+
+.certificate-paper {
+    overflow: auto;
+    padding: 24px;
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at top left, #e5d8c5, transparent 40%),
+        linear-gradient(135deg, #e9e4dc, #d9d4cc);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================
+   MAIN CERTIFICATE
+========================================== */
+
+.certificate-design {
+    width: 100%;
+    aspect-ratio: 297 / 210;
+    min-width: 720px;
+
+    padding: 2.5%;
+
+    background-color: var(--cert-paper);
+    background-image:
+        radial-gradient(circle at center, rgba(198, 161, 91, 0.055), transparent 55%),
+        linear-gradient(45deg, rgba(118, 44, 54, 0.025), transparent 45%);
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: var(--cert-ink);
+
+    font-family: Georgia, "Times New Roman", serif;
+    text-align: center;
+
+    box-sizing: border-box;
+    position: relative;
+    isolation: isolate;
+
+    box-shadow:
+        0 12px 35px rgba(45, 29, 20, 0.18),
+        0 2px 8px rgba(45, 29, 20, 0.08);
+}
+
+/* ==========================================
+   OUTER DECORATIVE BORDER
+========================================== */
+
+.certificate-design::before {
+    content: "";
+    position: absolute;
+    inset: 1.1%;
+    border: 2px solid var(--cert-gold);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.certificate-design::after {
+    content: "";
+    position: absolute;
+    inset: 1.8%;
+    border: 1px solid rgba(118, 44, 54, 0.35);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ==========================================
+   INNER CERTIFICATE BORDER
+========================================== */
+
+.certificate-border {
+    height: 100%;
+    width: 100%;
+
+    border: 4px double var(--cert-brand);
+    outline: 1px solid var(--cert-gold);
+    outline-offset: -12px;
+
+    padding: 3% 6%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Decorative corner details */
+
+.certificate-border::before,
+.certificate-border::after {
+    content: "✦";
+    position: absolute;
+    color: var(--cert-gold);
+    font-size: clamp(18px, 2.5vw, 30px);
+}
+
+.certificate-border::before {
+    top: 2%;
+    left: 3%;
+}
+
+.certificate-border::after {
+    top: 2%;
+    right: 3%;
+}
+
+/* ==========================================
+   CHURCH EMBLEM
+========================================== */
+
+.certificate-emblem {
+    font-size: clamp(22px, 3.5vw, 38px);
+    color: var(--cert-brand);
+    margin-bottom: 5px;
+    line-height: 1.2;
+    text-shadow: 0 2px 2px rgba(198, 161, 91, 0.2);
+}
+
+/* ==========================================
+   UPLOADED CHURCH LOGO
+========================================== */
+
+.certificate-logo {
+    width: clamp(55px, 7vw, 90px);
+    height: clamp(55px, 7vw, 90px);
+    object-fit: contain;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.12));
+}
+
+/* ==========================================
+   CHURCH NAME
+========================================== */
+
+.certificate-church {
+    font-size: clamp(13px, 1.8vw, 22px);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    margin: 0 0 1%;
+    font-weight: bold;
+    color: var(--cert-brand-dark);
+}
+
+/* ==========================================
+   SUBTITLE
+========================================== */
+
+.certificate-kicker {
+    font: 700 clamp(9px, 1.1vw, 13px) Arial, sans-serif;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cert-gold-dark);
+    margin: 0 0 1.2%;
+}
+
+/* ==========================================
+   CERTIFICATE TITLE
+========================================== */
+
+.certificate-design h1 {
+    font-size: clamp(23px, 3.8vw, 44px);
+    color: var(--cert-brand);
+
+    margin: 0 0 1%;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 700;
+
+    text-shadow: 0 1px 0 rgba(198, 161, 91, 0.2);
+}
+
+/* ==========================================
+   DECORATIVE DIVIDER
+========================================== */
+
+.certificate-rule {
+    width: 60%;
+    height: 2px;
+    border: 0;
+    background: linear-gradient(
+        to right,
+        transparent,
+        var(--cert-gold),
+        var(--cert-brand),
+        var(--cert-gold),
+        transparent
+    );
+    margin: 1.2% 0 1.5%;
+    position: relative;
+}
+
+/* ==========================================
+   CERTIFICATE BODY
+========================================== */
+
+.certificate-body {
+    font-size: clamp(11px, 1.4vw, 17px);
+    margin: 0.5% 0;
+    line-height: 1.8;
+    color: var(--cert-ink);
+}
+
+/* ==========================================
+   CHILD NAME
+========================================== */
+
+.certificate-design h2 {
+    font-size: clamp(18px, 2.7vw, 31px);
+    color: var(--cert-brand);
+    margin: 1% 0;
+    font-weight: bold;
+    font-style: italic;
+    letter-spacing: 1px;
+    text-decoration: underline;
+    text-decoration-color: var(--cert-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+}
+
+/* ==========================================
+   OPTIONAL CERTIFICATE DETAILS
+========================================== */
+
+.certificate-design p {
+    color: var(--cert-ink);
+}
+
+/* ==========================================
+   SIGNATURE AREA
+========================================== */
+
+.certificate-footer {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+
+    gap: 5%;
+    margin-top: 4%;
+}
+
+.certificate-footer div {
+    width: 30%;
+    border-top: 1px solid var(--cert-brand);
+    padding-top: 1%;
+    min-height: 30px;
+}
+
+.certificate-footer span {
+    display: block;
+    font-size: clamp(9px, 1vw, 13px);
+    min-height: 1.2em;
+    color: var(--cert-brand-dark);
+    font-weight: bold;
+}
+
+.certificate-footer small {
+    display: block;
+    font: 9px Arial, sans-serif;
+    color: var(--cert-muted);
+    margin-top: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* ==========================================
+   CERTIFICATE NUMBER AND DATE
+========================================== */
+
+.certificate-issued {
+    font: 10px Arial, sans-serif;
+    margin: 2% 0 0;
+    color: var(--cert-muted);
+    letter-spacing: 1px;
+}
+
+/* ==========================================
+   ACTION BUTTONS
+========================================== */
+
+.certificate-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.certificate-action {
+    padding: 11px 20px;
+    border: 1px solid #e5cfc7;
+    border-radius: 9px;
+    background: #f7ebe7;
+    color: var(--cert-brand-dark);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.certificate-action:hover {
+    background: #eedbd5;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(118, 44, 54, 0.12);
+}
+
+.certificate-action.primary {
+    background: linear-gradient(
+        135deg,
+        var(--cert-brand),
+        var(--cert-brand-dark)
+    );
+    color: white;
+    border-color: var(--cert-brand-dark);
+    box-shadow: 0 4px 12px rgba(118, 44, 54, 0.2);
+}
+
+.certificate-action.primary:hover {
+    background: var(--cert-brand-dark);
+    box-shadow: 0 7px 16px rgba(118, 44, 54, 0.25);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 650px) {
+
+    .certificate-dialog {
+        width: 96vw;
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .certificate-upload {
+        grid-template-columns: 1fr;
+    }
+
+    .certificate-upload small {
+        grid-column: auto;
+    }
+
+    .certificate-paper {
+        padding: 10px;
+    }
+
+    .certificate-design {
+        min-width: 720px;
+    }
+
+    .certificate-actions {
+        flex-direction: column;
+    }
+
+    .certificate-actions button {
+        width: 100%;
+    }
+}
+
+/* ==========================================
+   PRINT SETTINGS - A4 LANDSCAPE
+========================================== */
+
+@page {
+    size: A4 landscape;
+    margin: 0;
+}
+
+@media print {
+
+    html,
+    body {
+        width: 297mm !important;
+        height: 210mm !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: white !important;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    .certificate-paper,
+    .certificate-paper * {
+        visibility: visible;
+    }
+
+    .certificate-paper {
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        width: 297mm;
+        height: 210mm;
+
+        margin: 0;
+        padding: 0;
+
+        overflow: visible;
+
+        background: white !important;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .certificate-design {
+        width: 297mm;
+        height: 210mm;
+
+        min-width: 0;
+        aspect-ratio: auto;
+
+        margin: 0;
+        padding: 7mm;
+
+        background-color: var(--cert-paper) !important;
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        box-shadow: none;
+
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .certificate-border {
+        height: 100%;
+        break-inside: avoid;
+    }
+
+    .certificate-actions,
+    .certificate-tools,
+    .certificate-upload,
+    .certificate-dialog > .dialog-head {
+        display: none !important;
+    }
+
+}
+
+
+/* Responsive certificate controls and preview stage */
+.certificate-tools, .certificate-upload, .certificate-actions { max-width: 100%; }
+.certificate-upload { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cert-stage { max-width: 100%; overflow: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 680px) {
+  .certificate-upload { grid-template-columns: minmax(0, 1fr); }
+  .certificate-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .certificate-actions button { width: 100%; margin: 0; }
+}
+@media (max-width: 380px) {
+  .certificate-actions { grid-template-columns: minmax(0, 1fr); }
+}

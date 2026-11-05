@@ -1,0 +1,23 @@
+{
+  "name": "baptism-church-record-system",
+  "version": "1.0.0",
+  "description": "AI-Based Baptism Church Record Keeping System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "mongodb": "^6.12.0",
+    "multer": "^2.5.0",
+    "openai": "^4.77.0",
+    "pdfkit": "^0.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

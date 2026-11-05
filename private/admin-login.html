@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Administrator Sign In | Church Records</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" type="image/png" href="/favicon.png?v=2">
+</head>
+<body>
+  <main class="admin-auth-shell">
+    <section class="admin-auth-card">
+      <img src="/logo.png" alt="AI-Based Baptist Church Record System logo" style="display:block;width:min(180px,55vw);height:auto;object-fit:contain;margin:0 auto 18px;border-radius:12px;">
+      <p class="eyebrow">RESTRICTED AREA</p>
+      <h1>Administrator sign in</h1>
+      <p class="muted">This page is for authorized church administrators only.</p>
+      <form id="adminLoginForm">
+        <label>Email address<input name="email" type="email" required autocomplete="username" placeholder="Administrator email"></label>
+        <label>Password<input name="password" type="password" required autocomplete="current-password" placeholder="Administrator password"></label>
+        <button class="primary full" type="submit">Access admin dashboard <span>→</span></button>
+        <p id="adminError" class="error" role="alert" aria-live="polite"></p>
+      </form>
+      <a class="back-link" href="/">← Back to user sign in</a>
+      <p class="auth-footnote">All administrator actions are protected by server-side role checks.</p>
+    </section>
+  </main>
+  <script>
+    const form = document.getElementById('adminLoginForm');
+    const errorBox = document.getElementById('adminError');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = form.querySelector('button[type="submit"]');
+      button.disabled = true;
+      button.textContent = 'Verifying...';
+      errorBox.textContent = '';
+      try {
+        const response = await fetch('/api/admin/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: form.elements.email.value.trim(), password: form.elements.password.value })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Unable to sign in.');
+        window.location.replace('/');
+      } catch (error) {
+        errorBox.textContent = error.message;
+        button.disabled = false;
+        button.innerHTML = 'Access admin dashboard <span>→</span>';
+      }
+    });
+  </script>
+</body>
+</html>
