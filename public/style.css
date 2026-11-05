@@ -477,6 +477,29 @@ main {
 
     background: var(--gold-light);
 }
+.stat-ic {
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    font-size: 19px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #fdf6e8, #f5e7cc);
+    border: 1px solid #eddcba;
+    color: #9a742f;
+}
+
+/* Also add the image sizing rule for your new PNG icons */
+.stat-ic .stat-img-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+}
 
 .stat span {
     display: block;
