@@ -447,7 +447,8 @@ main {
     border: 1px solid var(--line);
     border-radius: 18px;
 
-    padding: 24px;
+    /* Pinalaki natin ang kaliwang padding para magkasya ang malaking icon box */
+    padding: 24px 24px 24px 84px;
 
     box-shadow: var(--shadow);
 
@@ -455,7 +456,6 @@ main {
         transform .2s ease,
         box-shadow .2s ease;
 }
-
 .stat:hover {
     transform: translateY(-4px);
 
@@ -479,24 +479,23 @@ main {
 }
 .stat-ic {
     position: absolute;
-    left: 22px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    width: 42px;
-    height: 42px;
-    display: grid;
-    place-items: center;
-    font-size: 19px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 13px;
     background: linear-gradient(135deg, #fdf6e8, #f5e7cc);
     border: 1px solid #eddcba;
-    color: #9a742f;
+    overflow: hidden;
 }
 
-/* Also add the image sizing rule for your new PNG icons */
 .stat-ic .stat-img-icon {
-    width: 24px;
-    height: 24px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     display: block;
 }
