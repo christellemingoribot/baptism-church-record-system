@@ -441,20 +441,12 @@ main {
 .stat {
     position: relative;
     overflow: hidden;
-
     background: white;
-
     border: 1px solid var(--line);
     border-radius: 18px;
-
-    /* Pinalaki natin ang kaliwang padding para magkasya ang malaking icon box */
-    padding: 24px 24px 24px 84px;
-
+    padding: 24px 24px 24px 90px; /* Mas malawak na espasyo sa kaliwa para sa icon box */
     box-shadow: var(--shadow);
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease;
+    transition: transform .2s ease, box-shadow .2s ease;
 }
 .stat:hover {
     transform: translateY(-4px);
@@ -479,23 +471,23 @@ main {
 }
 .stat-ic {
     position: absolute;
-    left: 14px;
+    left: 18px;
     top: 50%;
     transform: translateY(-50%);
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 13px;
+    border-radius: 14px;
     background: linear-gradient(135deg, #fdf6e8, #f5e7cc);
     border: 1px solid #eddcba;
     overflow: hidden;
 }
 
 .stat-ic .stat-img-icon {
-    width: 100%;
-    height: 100%;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
     display: block;
 }
