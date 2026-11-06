@@ -1,15 +1,31 @@
-BAPTISM CERTIFICATE FEATURE - INSTALLATION
+# Updated Baptism Church Record System backend
 
-1. Back up your current project first.
-2. Copy the updated public/index.html and public/app.js into your existing public folder.
-3. Add public/certificate.css to the same folder. The updated index.html already links to it.
-4. Keep your existing public/style.css, server.js, .env, and MongoDB configuration. The certificate feature is generated in the browser and does not require a new npm package or database migration.
-5. Restart the app (Ctrl+C, then npm start or node server.js).
-6. Sign in. In the Registry table, click Certificate beside a child's record.
-7. Optional: upload a PNG/JPG/WEBP blank certificate background (max 5 MB), then click Print certificate. For best results, use an A4 landscape background with no preprinted child details.
+## Apply these files
+1. Back up your existing `server.js` and `package.json`.
+2. Replace them with `server.js` and `package.json` from this ZIP.
+3. In your project terminal, run:
+   `npm install`
+4. Confirm your environment variables are configured in your local `.env` and in Render's Environment settings.
 
-NOTES
-- The uploaded background image is kept only in the current browser session; it is not uploaded to MongoDB or saved permanently.
-- The system automatically fills the child's name, birth date, baptism date, parents/guardian, church, minister, and certificate number from the saved record.
-- Check all details and obtain church authorization/signatures before issuing an official certificate.
-- In the print dialog, choose A4, Landscape, and enable background graphics if you are using an uploaded design.
+## Required environment variables
+- `MONGODB_URI` — MongoDB Atlas connection string
+- `DB_NAME=church_records` (optional; defaults to `church_records`)
+- `SESSION_SECRET` — a long, random secret (required in production)
+- `ADMIN_EMAIL` — administrator email
+- `ADMIN_PASSWORD_HASH` — bcrypt hash of the admin password (recommended and required for plain-text-free production config)
+- `NODE_ENV=production` on Render
+- `OPENAI_API_KEY` — optional; AI summary falls back to database-based statistics without it
+
+Generate a bcrypt hash locally (replace `YOUR_ADMIN_PASSWORD` with your actual password; do not share the password):
+`node -e "require('bcryptjs').hash('YOUR_ADMIN_PASSWORD', 12).then(console.log)"`
+
+Copy the printed hash into `ADMIN_PASSWORD_HASH` in Render. Remove `ADMIN_PASSWORD` from Render after setting the hash. Do not commit `.env` or secrets to GitHub.
+
+## What changed
+- Adds MongoDB-backed session storage via `connect-mongo`; sessions persist across server restarts instead of using Express's in-memory session store.
+- Production admin login requires a bcrypt hash instead of a plain-text admin password.
+- Existing routes and MongoDB collections remain in place.
+
+## Important
+- Back up the database before changing production settings.
+- The app has not been tested against your live MongoDB/Render environment from here. After deploying, check `/api/health`, test user login, admin login, and create/read/update/delete a test record before using it for real church records.

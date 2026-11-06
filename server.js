@@ -7,6 +7,7 @@ const path = require("path");
 const dns = require("dns");
 const express = require("express");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const bcrypt = require("bcryptjs");
 const { MongoClient, ObjectId } = require("mongodb");
 const OpenAI = require("openai");
@@ -41,14 +42,31 @@ if (
     throw new Error("SESSION_SECRET is required in production.");
 }
 
+// Store sessions in MongoDB instead of Express's in-memory store.
+// MONGODB_URI is required for the real application; the same database is used
+// for sessions and records, in separate collections.
+if (!process.env.MONGODB_URI) {
+    throw new Error("MONGODB_URI is required. Configure it in your environment.");
+}
+
+const sessionStore = MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI,
+    dbName: process.env.DB_NAME || "church_records",
+    collectionName: "sessions",
+    ttl: Math.floor(SESSION_MAX_AGE / 1000),
+    autoRemove: "native"
+});
+
 app.use(
     session({
         name: "baptism.sid",
         secret:
             process.env.SESSION_SECRET ||
             "local-development-secret-change-me",
+        store: sessionStore,
         resave: false,
         saveUninitialized: false,
+        rolling: true,
         cookie: {
             httpOnly: true,
             sameSite: "lax",
@@ -260,11 +278,16 @@ app.post("/api/admin/login", async (req, res) => {
             process.env.ADMIN_EMAIL ?? ""
         ).trim().toLowerCase();
 
+        // Prefer ADMIN_PASSWORD_HASH (bcrypt). ADMIN_PASSWORD remains supported
+        // temporarily for existing deployments; migrate to the hash variable.
+        const adminPasswordHash = String(
+            process.env.ADMIN_PASSWORD_HASH ?? ""
+        );
         const adminPassword = String(
             process.env.ADMIN_PASSWORD ?? ""
         );
 
-        if (!adminEmail || !adminPassword) {
+        if (!adminEmail || (!adminPassword && !adminPasswordHash)) {
             console.error("Admin credentials are not configured.");
 
             return res.status(500).json({
@@ -278,13 +301,14 @@ app.post("/api/admin/login", async (req, res) => {
         // Verify password
         let passwordMatches = false;
 
-        if (/^\$2[aby]\$/.test(adminPassword)) {
-            passwordMatches = await bcrypt.compare(
-                password,
-                adminPassword
-            );
-        } else {
-            passwordMatches = password === adminPassword;
+        if (adminPasswordHash) {
+            passwordMatches = await bcrypt.compare(password, adminPasswordHash);
+        } else if (/^\$2[aby]\$/.test(adminPassword)) {
+            // Backward-compatible support if ADMIN_PASSWORD already contains a bcrypt hash.
+            passwordMatches = await bcrypt.compare(password, adminPassword);
+        } else if (process.env.NODE_ENV !== "production") {
+            // Plain-text admin passwords are permitted only in local development.
+            passwordMatches = Boolean(adminPassword) && password === adminPassword;
         }
 
         if (!emailMatches || !passwordMatches) {
@@ -656,10 +680,21 @@ async function start() {
 
     if (
         !process.env.ADMIN_EMAIL ||
-        !process.env.ADMIN_PASSWORD
+        (!process.env.ADMIN_PASSWORD && !process.env.ADMIN_PASSWORD_HASH)
     ) {
         throw new Error(
-            "ADMIN_EMAIL and ADMIN_PASSWORD must be configured."
+            "ADMIN_EMAIL and ADMIN_PASSWORD_HASH (recommended) or ADMIN_PASSWORD must be configured."
+        );
+    }
+
+    if (
+        process.env.NODE_ENV === "production" &&
+        process.env.ADMIN_PASSWORD &&
+        !process.env.ADMIN_PASSWORD_HASH &&
+        !/^\\$2[aby]\\$/.test(process.env.ADMIN_PASSWORD)
+    ) {
+        throw new Error(
+            "For production, set ADMIN_PASSWORD_HASH to a bcrypt hash instead of a plain-text ADMIN_PASSWORD."
         );
     }
 
@@ -760,6 +795,7 @@ async function shutdown(signal) {
     if (mongoClient) {
         await mongoClient.close().catch(console.error);
     }
+    await sessionStore.close().catch(console.error);
 
     process.exit(0);
 }

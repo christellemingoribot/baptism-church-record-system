@@ -13,7 +13,7 @@
 /* =========================================================
    CHURCH RECORD SYSTEM — PREMIUM BURGUNDY & GOLD
    Enhanced edition: animations, micro-interactions,
-   skeleton loading, toasts, demo backend, live certificate
+   skeleton loading, toasts, backend integration, live certificate
 ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
@@ -322,26 +322,7 @@ small { color: var(--muted); }
 /* Form swap animation */
 .swap-in { animation: fadeUp .35s var(--ease-spring); }
 
-/* Demo hint */
-.demo-hint {
-    margin-top: 18px;
-    padding: 12px 14px;
-    border: 1px dashed #e3cfa4;
-    background: #fffaf0;
-    border-radius: 12px;
-    font-size: 12px;
-    color: #7a6a4f;
-    line-height: 1.7;
-}
-.demo-hint code {
-    background: #f3e8d2;
-    padding: 1px 6px;
-    border-radius: 6px;
-    font-size: 11px;
-    color: #6d4f1f;
-    cursor: pointer;
-}
-.demo-hint code:hover { background: #ecd9b6; }
+
 
 /* ============ AUTH SHELL ============ */
 
@@ -2124,13 +2105,7 @@ header small {
                 <button type="submit" class="primary full">Create account <span class="arrow">→</span></button>
                 <p id="registerError" class="error" role="alert" aria-live="polite"></p>
             </form>
-            <div class="demo-hint" id="demoHint" hidden>
-                ✨ <b>Demo mode</b> — no server detected, a local demo registry is active.<br>
-                Admin: <code data-fill="admin@church.ph">admin@church.ph</code> / <code>admin123</code> ·
-                Viewer: <code data-fill="user@church.ph">user@church.ph</code> / <code>user123</code><br>
-                <small>(Click a credential to fill the form. New accounts are viewers.)</small>
-            </div>
-            <p class="auth-footnote">By continuing, you agree to use the church registry responsibly.</p>
+<p class="auth-footnote">By continuing, you agree to use the church registry responsibly.</p>
         </div>
     </div>
 </div>
@@ -2239,7 +2214,7 @@ header small {
         </section>
     </main>
 
-    <footer class="app-footer">✦ Church Baptism Record Keeping System · Enhanced edition · Records stay on this device in demo mode</footer>
+    <footer class="app-footer">✦ Church Baptism Record Keeping System · Enhanced edition</footer>
 </div>
 
 <!-- ==================== ADD / EDIT RECORD ==================== -->
@@ -2369,9 +2344,8 @@ header small {
 
 /* =========================================================
    CHURCH BAPTISM RECORD SYSTEM — ENHANCED FRONTEND
-   Works with the real backend (/api/*). If no backend is
-   detected it automatically runs a local demo registry
-   (localStorage) so every feature stays usable.
+   Uses the real backend (/api/*) only. Records are stored
+   by the server and never saved to browser-only storage.
 ========================================================= */
 
 const $  = (s) => document.querySelector(s);
@@ -2439,170 +2413,8 @@ document.addEventListener("click", (e) => {
 });
 
 /* =========================================================
-   DEMO BACKEND (localStorage)
+   API ROUTER — backend only (MongoDB-backed server required)
 ========================================================= */
-
-const DB_KEY = "crs_demo_db_v2";
-const SES_KEY = "crs_demo_session_v2";
-
-function seedDatabase() {
-    const now = new Date().toISOString();
-    const mk = (i, o) => Object.assign({ _id: "seed-" + i, createdAt: now, updatedAt: now }, o);
-    return {
-        users: [
-            { name: "Church Administrator", email: "admin@church.ph", password: "admin123", role: "admin" },
-            { name: "Registry Viewer",      email: "user@church.ph",  password: "user123",  role: "user" }
-        ],
-        records: [
-            mk(1,  { firstName: "Maria",      lastName: "Santos",     birthDate: "2026-01-14", baptismDate: "2026-04-12", parents: "Jose & Ana Santos",     minister: "Rev. Fr. Pedro Reyes",   church: "San Isidro Parish",       certificateNo: "BPT-2026-001", notes: "" }),
-            mk(2,  { firstName: "Juan Miguel",lastName: "Dela Cruz",  birthDate: "2026-02-02", baptismDate: "2026-05-10", parents: "Miguel & Rosa Dela Cruz", minister: "Rev. Fr. Pedro Reyes", church: "San Isidro Parish",     certificateNo: "BPT-2026-002", notes: "Godparents: Mr. & Mrs. Lim" }),
-            mk(3,  { firstName: "Sophia",     lastName: "Reyes",      birthDate: "2025-11-20", baptismDate: "2026-02-14", parents: "Carlo & Bea Reyes",      minister: "Rev. Fr. Andres Cruz",   church: "Our Lady of Peace Parish", certificateNo: "BPT-2026-003", notes: "" }),
-            mk(4,  { firstName: "Gabriel",    lastName: "Mendoza",    birthDate: "2026-03-05", baptismDate: "2026-06-21", parents: "Paolo Mendoza",           minister: "Rev. Fr. Andres Cruz",   church: "Our Lady of Peace Parish", certificateNo: "BPT-2026-004", notes: "" }),
-            mk(5,  { firstName: "Angeline",   lastName: "Torres",     birthDate: "2025-12-25", baptismDate: "2026-03-29", parents: "Ramon & Liza Torres",    minister: "Rev. Fr. Jose Aquino",   church: "St. Michael the Archangel", certificateNo: "BPT-2026-005", notes: "Twins — see sibling record" }),
-            mk(6,  { firstName: "Nathaniel",  lastName: "Torres",     birthDate: "2025-12-25", baptismDate: "2026-03-29", parents: "Ramon & Liza Torres",    minister: "Rev. Fr. Jose Aquino",   church: "St. Michael the Archangel", certificateNo: "BPT-2026-006", notes: "Twin of Angeline" }),
-            mk(7,  { firstName: "Isabella",   lastName: "Fernandez",  birthDate: "2024-07-19", baptismDate: "2026-07-19", parents: "Mark & Jen Fernandez",   minister: "Rev. Fr. Pedro Reyes",   church: "San Isidro Parish",        certificateNo: "BPT-2026-007", notes: "" }),
-            mk(8,  { firstName: "Ethan James",lastName: "Villanueva", birthDate: "2026-05-30", baptismDate: "2026-08-16", parents: "Ryan Villanueva",         minister: "Rev. Fr. Jose Aquino",   church: "Holy Family Parish",       certificateNo: "BPT-2026-008", notes: "" }),
-            mk(9,  { firstName: "Hannah",     lastName: "Lim",        birthDate: "2023-09-09", baptismDate: "2026-09-27", parents: "David & Grace Lim",      minister: "Rev. Fr. Andres Cruz",   church: "Our Lady of Peace Parish", certificateNo: "BPT-2026-009", notes: "Delayed registration" }),
-            mk(10, { firstName: "Zachary",    lastName: "Aquino",     birthDate: "2026-08-08", baptismDate: "2026-10-18", parents: "Noel & Pam Aquino",      minister: "Rev. Fr. Jose Aquino",   church: "Holy Family Parish",       certificateNo: "BPT-2026-010", notes: "" })
-        ]
-    };
-}
-
-function db() {
-    let data = null;
-    try { data = JSON.parse(localStorage.getItem(DB_KEY)); } catch (e) {}
-    if (!data || !Array.isArray(data.records)) {
-        data = seedDatabase();
-        localStorage.setItem(DB_KEY, JSON.stringify(data));
-    }
-    return data;
-}
-
-function saveDb(data) {
-    localStorage.setItem(DB_KEY, JSON.stringify(data));
-}
-
-function demoSession() {
-    try { return JSON.parse(localStorage.getItem(SES_KEY)); } catch (e) { return null; }
-}
-
-function demoApi(url, options = {}) {
-    const method = (options.method || "GET").toUpperCase();
-    const body = options.body ? JSON.parse(options.body) : {};
-    const data = db();
-
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            try {
-                /* ---- auth ---- */
-                if (url === "/api/register" && method === "POST") {
-                    if (data.users.some((u) => u.email === body.email))
-                        throw new Error("An account with this email already exists.");
-                    data.users.push({ name: body.name, email: body.email, password: body.password, role: "user" });
-                    saveDb(data);
-                    return resolve({ ok: true });
-                }
-                if (url === "/api/user/login" && method === "POST") {
-                    const user = data.users.find(
-                        (u) => u.email === body.email && u.password === body.password
-                    );
-                    if (!user) throw new Error("Invalid email or password.");
-                    localStorage.setItem(SES_KEY, JSON.stringify({ email: user.email }));
-                    return resolve({ ok: true, role: user.role, name: user.name });
-                }
-                if (url === "/api/logout" && method === "POST") {
-                    localStorage.removeItem(SES_KEY);
-                    return resolve({ ok: true });
-                }
-                if (url === "/api/me") {
-                    const ses = demoSession();
-                    const user = ses && data.users.find((u) => u.email === ses.email);
-                    if (!user) return resolve({ authenticated: false });
-                    return resolve({ authenticated: true, role: user.role, name: user.name, email: user.email });
-                }
-
-                /* ---- records ---- */
-                if (url.startsWith("/api/records")) {
-                    const ses = demoSession();
-                    const user = ses && data.users.find((u) => u.email === ses.email);
-                    if (!user) throw new Error("Session expired. Please sign in again.");
-
-                    if (url === "/api/records" && method === "GET") {
-                        const qm = url.match(/[?&]q=([^&]*)/);
-                        const q = qm ? decodeURIComponent(qm[1]).toLowerCase() : (body.q || "").toLowerCase();
-                        let list = data.records.slice();
-                        if (q) {
-                            list = list.filter((r) =>
-                                [r.firstName, r.lastName, r.parents, r.minister, r.church, r.certificateNo, r.notes]
-                                    .filter(Boolean)
-                                    .some((v) => String(v).toLowerCase().includes(q))
-                            );
-                        }
-                        list.sort((a, b) => String(b.baptismDate).localeCompare(String(a.baptismDate)));
-                        return resolve(list);
-                    }
-                    if (url === "/api/records" && method === "POST") {
-                        const rec = Object.assign({}, body, {
-                            _id: uid(),
-                            createdAt: new Date().toISOString(),
-                            updatedAt: new Date().toISOString()
-                        });
-                        data.records.push(rec);
-                        saveDb(data);
-                        return resolve(rec);
-                    }
-                    const m = url.match(/^\/api\/records\/(.+)$/);
-                    if (m) {
-                        const id = decodeURIComponent(m[1]);
-                        const idx = data.records.findIndex((r) => String(r._id) === id);
-                        if (idx === -1) throw new Error("Record not found.");
-                        if (method === "PUT") {
-                            data.records[idx] = Object.assign({}, data.records[idx], body, { updatedAt: new Date().toISOString() });
-                            saveDb(data);
-                            return resolve(data.records[idx]);
-                        }
-                        if (method === "DELETE") {
-                            const gone = data.records.splice(idx, 1)[0];
-                            saveDb(data);
-                            return resolve(gone);
-                        }
-                    }
-                }
-
-                /* ---- AI summary (aggregate only — no names) ---- */
-                if (url === "/api/ai-summary" && method === "POST") {
-                    const list = data.records;
-                    if (!list.length)
-                        return resolve({ summary: "The registry is currently empty. Add a baptism record to begin building insights." });
-                    const year = new Date().getFullYear();
-                    const thisYear = list.filter((r) => String(r.baptismDate || "").startsWith(String(year))).length;
-                    const churches = {};
-                    list.forEach((r) => { if (r.church) churches[r.church] = (churches[r.church] || 0) + 1; });
-                    const top = Object.entries(churches).sort((a, b) => b[1] - a[1])[0];
-                    const dates = list.map((r) => r.baptismDate).filter(Boolean).sort();
-                    const fmt = (d) => new Date(d + "T00:00:00").toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" });
-                    const summary =
-                        "The registry currently holds " + list.length + " baptism record" + (list.length === 1 ? "" : "s") +
-                        ", spanning " + fmt(dates[0]) + " to " + fmt(dates[dates.length - 1]) + ". " +
-                        thisYear + " baptism" + (thisYear === 1 ? " has" : "s have") + " been recorded this year. " +
-                        (top ? "The most active parish is " + top[0] + " with " + top[1] + " record" + (top[1] === 1 ? "" : "s") + ". " : "") +
-                        "Overall activity appears steady — consider scheduling regular registry reviews each quarter.";
-                    return resolve({ summary });
-                }
-
-                throw new Error("Demo: unsupported request " + method + " " + url);
-            } catch (err) {
-                reject(err);
-            }
-        }, 320);
-    });
-}
-
-/* =========================================================
-   API ROUTER — real backend first, demo fallback
-========================================================= */
-
-let backendLive = null;   // null unknown · true live · false demo
 
 async function realApi(url, options = {}) {
     const requestOptions = {
@@ -2622,24 +2434,15 @@ async function realApi(url, options = {}) {
 }
 
 async function api(url, options = {}) {
-    if (backendLive === true)  return realApi(url, options);
-    if (backendLive === false) return demoApi(url, options);
-    throw new Error("Backend mode not initialised.");
+    return realApi(url, options);
 }
 
 async function detectBackend() {
     try {
-        const ctrl = new AbortController();
-        const t = setTimeout(() => ctrl.abort(), 1200);
-        const r = await fetch("/api/me", { credentials: "include", signal: ctrl.signal });
-        clearTimeout(t);
-        if (!r.ok) throw new Error("no backend");
-        backendLive = true;
-        return await r.json();
-    } catch (e) {
-        backendLive = false;
-        $("#demoHint").hidden = false;
-        return demoApi("/api/me");
+        return await realApi("/api/me");
+    } catch (error) {
+        toast("error", "Server unavailable", "Cannot connect to the church records server. Please check the deployment and try again.");
+        return { authenticated: false };
     }
 }
 
@@ -2745,17 +2548,6 @@ if (regPassword) {
             score === 3 ? "Good password" : "Strong password";
     });
 }
-
-/* demo credential quick-fill */
-$$("#demoHint code[data-fill]").forEach((code) => {
-    code.addEventListener("click", () => {
-        loginForm.elements.email.value = code.dataset.fill;
-        loginForm.elements.password.value =
-            code.dataset.fill.startsWith("admin") ? "admin123" : "user123";
-        loginError.textContent = "";
-        loginForm.elements.password.focus();
-    });
-});
 
 /* =========================================================
    REGISTER / LOGIN / LOGOUT
@@ -3362,7 +3154,7 @@ document.addEventListener("keydown", (e) => {
 showLogin();
 (async function init() {
     try {
-        const session = await detectBackend();      /* probes real backend, else demo */
+        const session = await detectBackend();
         if (session && session.authenticated) {
             currentRole = session.role || "user";
             currentUser = { name: session.name || session.email || "User" };
@@ -3375,7 +3167,7 @@ showLogin();
     }
 })();
 
-console.log("Baptism Church Record System — enhanced edition — loaded.");
+console.log("Baptism Church Record System — backend-only edition — loaded.");
 </script>
 
 </body>
