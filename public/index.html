@@ -2184,7 +2184,7 @@ body{background:#eef2f7;color:var(--ink)}
                 </span>
                 <span class="role-badge viewer" id="roleBadge">Viewer</span>
             </div>
-            <button type="button" id="logout" class="quiet">Sign out</button>
+            <button type="button" id="settingsShortcut" class="header-settings" aria-label="Open settings"><span aria-hidden="true">⚙</span> Settings</button>
         </div>
     </header>
 
@@ -2672,7 +2672,7 @@ loginForm.addEventListener("submit", async (event) => {
     }
 });
 
-$("#logout").addEventListener("click", async () => {
+async function performLogout() {
     try {
         await api("/api/logout", { method: "POST" });
         recordsCache = [];
@@ -2690,7 +2690,7 @@ $("#logout").addEventListener("click", async () => {
     } catch (error) {
         toast("error", "Logout failed", error.message);
     }
-});
+}
 
 /* =========================================================
    LOADING + SKELETON
@@ -3193,6 +3193,15 @@ $("#printCertificate").addEventListener("click", () => {
 .app-sidebar .sidebar-bottom button { width: 100%; display: flex; align-items: center; gap: 11px; padding: 11px 12px; border: 1px solid rgba(255,220,145,.3) !important; border-radius: 9px; background: transparent !important; color: #f5d995 !important; box-shadow: none !important; text-align: left; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .18s ease,color .18s ease,border-color .18s ease; }
 .app-sidebar .sidebar-bottom button:hover { background: linear-gradient(100deg,#bd8b2f,#e2b957) !important; color: #09264b !important; border-color: #f1d18b !important; }
 .app-sidebar .sidebar-bottom button .nav-icon { color: inherit; font-size: 17px; }
+/* Final UI fixes: colored statistic icons and a readable header Settings shortcut */
+.dashboard-stats .stat-ic.stat-icon-blue { color:#1764c0 !important; background:#e7f0ff !important; border-color:#cfe0fa !important; }
+.dashboard-stats .stat-ic.stat-icon-blue svg { fill:#1764c0 !important; color:#1764c0 !important; }
+.dashboard-stats .stat-ic.stat-icon-pink svg { fill:#e63d88 !important; color:#e63d88 !important; }
+.dashboard-stats .stat-ic.stat-icon-gold svg { fill:#a87917 !important; color:#a87917 !important; }
+.header-settings { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 15px; border:1px solid #d6ad62 !important; border-radius:9px; background:linear-gradient(135deg,#fff9eb,#f7e5b9) !important; color:#082b55 !important; font-size:13px; font-weight:750; cursor:pointer; box-shadow:0 3px 10px rgba(8,43,85,.08); white-space:nowrap; }
+.header-settings span { color:#a87917 !important; font-size:17px; line-height:1; }
+.header-settings:hover { background:linear-gradient(135deg,#f5e4b9,#e5bd68) !important; color:#061d3d !important; }
+@media(max-width:720px){ .header-settings{padding:8px 10px;font-size:12px;} }
 @media (max-width: 1000px) { .dashboard-stats { grid-template-columns: repeat(2,minmax(0,1fr)) !important; } }
 @media (max-width: 720px) { .dashboard-stats { grid-template-columns: repeat(2,minmax(0,1fr)) !important; } .dashboard-stats .stat { padding: 14px 10px !important; } .dashboard-stats .stat-ic { position: relative !important; top: auto !important; left: auto !important; transform: none !important; margin-bottom: 8px !important; } }
 
@@ -3316,7 +3325,8 @@ console.log("Baptism Church Record System — backend-only edition — loaded.")
     if(page==='records') setTimeout(()=>document.getElementById('search')?.focus({preventScroll:true}),60);
     window.scrollTo({top:0,behavior:'smooth'});
   }
-  sidebar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.page){go(b.dataset.page);return;}if(b.dataset.action==='new-record')document.getElementById('newRecord')?.click();if(b.dataset.action==='generate'){go('records');setTimeout(()=>{const first=document.querySelector('#rows .table-action.cert');if(first)first.click();else toast('info','No record selected','Add or select a baptism record to generate its certificate.');},100);}if(b.dataset.action==='logout')document.getElementById('logout')?.click();});
+  document.getElementById('settingsShortcut')?.addEventListener('click',()=>go('settings'));
+  sidebar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.page){go(b.dataset.page);return;}if(b.dataset.action==='new-record')document.getElementById('newRecord')?.click();if(b.dataset.action==='generate'){go('records');setTimeout(()=>{const first=document.querySelector('#rows .table-action.cert');if(first)first.click();else toast('info','No record selected','Add or select a baptism record to generate its certificate.');},100);}if(b.dataset.action==='logout')performLogout();});
   main.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go);});
 
   function fmtDate(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});}
