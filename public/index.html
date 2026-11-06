@@ -2098,6 +2098,280 @@ body{background:#eef2f7;color:var(--ink)}
 @media print{.app-sidebar,.app-workspace>header{display:none!important}.app-shell{display:block}.app-workspace main{padding:0;margin:0}.workspace-page{display:none!important}#certificateDialog[open]{display:block}}
 </style>
 
+
+<style id="modern-blue-motion-theme">
+/* =========================================================
+   MODERN NAVY + ICE BLUE THEME
+   Soft blue surfaces, smooth motion, accessible animation
+========================================================= */
+:root {
+  --ice-bg: #e8f0fb;
+  --ice-surface: #eff5fd;
+  --ice-surface-2: #e4eefb;
+  --ice-border: #cfdef0;
+  --navy-ink: #102c50;
+  --blue-muted: #607895;
+  --blue-accent: #2877c7;
+  --blue-deep: #0a3263;
+  --gold-accent: #d6ad62;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  color: var(--navy-ink);
+  background:
+    radial-gradient(ellipse at 12% 12%, rgba(83,151,222,.16), transparent 34%),
+    radial-gradient(ellipse at 88% 78%, rgba(43,112,187,.12), transparent 38%),
+    linear-gradient(135deg, #e7effa 0%, #edf4fc 48%, #e3edf9 100%);
+  background-size: 140% 140%;
+  animation: blueAtmosphere 22s ease-in-out infinite alternate;
+}
+
+@keyframes blueAtmosphere {
+  0% { background-position: 0% 20%; }
+  100% { background-position: 100% 80%; }
+}
+
+#appView {
+  min-height: 100vh;
+  background: transparent;
+}
+
+.app-shell {
+  background: transparent;
+}
+
+.app-workspace {
+  min-width: 0;
+  background: linear-gradient(145deg, rgba(237,244,253,.88), rgba(225,237,250,.92));
+}
+
+.app-workspace > header {
+  background: rgba(239,246,255,.90) !important;
+  border-bottom: 1px solid rgba(185,207,233,.78) !important;
+  box-shadow: 0 5px 22px rgba(12,48,91,.055) !important;
+  backdrop-filter: blur(16px);
+}
+
+.app-workspace main {
+  animation: contentEnter .65s cubic-bezier(.2,.75,.25,1) both;
+}
+
+@keyframes contentEnter {
+  from { opacity: 0; transform: translateY(13px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Navigation motion */
+.app-sidebar {
+  background: linear-gradient(180deg, #0b3568 0%, #082951 55%, #061f40 100%) !important;
+  box-shadow: 8px 0 28px rgba(5,30,62,.17) !important;
+}
+
+.sidebar-nav button {
+  transition: background .25s ease, color .25s ease, transform .25s ease,
+              box-shadow .25s ease !important;
+}
+
+.sidebar-nav button:hover {
+  transform: translateX(4px) !important;
+  background: rgba(113,177,239,.16) !important;
+}
+
+.sidebar-nav button.active {
+  background: linear-gradient(105deg, #2d83d8, #1765b5) !important;
+  box-shadow: 0 7px 18px rgba(5,40,83,.25), inset 0 1px 0 rgba(255,255,255,.18) !important;
+}
+
+/* Welcome banner */
+.welcome {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #fff !important;
+  border: 1px solid rgba(133,184,232,.32) !important;
+  background: linear-gradient(115deg, #082b55, #125493, #236cae, #0c3b70) !important;
+  background-size: 240% 240% !important;
+  animation: welcomeGradient 14s ease infinite, welcomeEnter .75s ease both;
+  box-shadow: 0 16px 34px rgba(8,43,85,.18) !important;
+}
+
+@keyframes welcomeGradient {
+  0%,100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes welcomeEnter {
+  from { opacity: 0; transform: translateY(18px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.welcome h1, .welcome .muted, .welcome .eyebrow {
+  color: #fff !important;
+}
+.welcome .muted { opacity: .86; }
+.welcome .eyebrow { color: #f2d28d !important; }
+
+.welcome::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 260px;
+  height: 260px;
+  right: 7%;
+  top: -155px;
+  border: 1px solid rgba(255,255,255,.17);
+  border-radius: 50%;
+  box-shadow: 0 0 0 28px rgba(255,255,255,.035),
+              0 0 0 58px rgba(255,255,255,.025);
+  animation: haloDrift 12s ease-in-out infinite alternate;
+}
+@keyframes haloDrift {
+  from { transform: translate3d(-10px,0,0) scale(.96); }
+  to { transform: translate3d(16px,22px,0) scale(1.06); }
+}
+
+/* Blue-tinted dashboard surfaces */
+.stat, .panel, .feature-card, .report-stat, .settings-row,
+.workspace-page .upload-drop, .workspace-page .verify-result {
+  background: linear-gradient(145deg, #f4f8fe 0%, #eaf2fc 100%) !important;
+  border-color: var(--ice-border) !important;
+  box-shadow: 0 7px 20px rgba(15,57,103,.065) !important;
+}
+
+.stat {
+  animation: cardRise .65s cubic-bezier(.2,.75,.25,1) both;
+  transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease !important;
+}
+.stat:nth-child(2) { animation-delay: .08s; }
+.stat:nth-child(3) { animation-delay: .16s; }
+.stat:nth-child(4) { animation-delay: .24s; }
+
+@keyframes cardRise {
+  from { opacity: 0; transform: translateY(17px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stat:hover, .feature-card:hover, .report-stat:hover {
+  transform: translateY(-5px);
+  border-color: #9fc2e8 !important;
+  box-shadow: 0 14px 28px rgba(15,67,121,.12) !important;
+}
+
+.stat::after {
+  background: radial-gradient(circle, rgba(88,151,218,.19), rgba(88,151,218,.04)) !important;
+}
+
+.stat-ic {
+  background: linear-gradient(145deg, #dcecff, #c8def6) !important;
+  border: 1px solid #bdd5f0 !important;
+}
+
+.stat strong, .report-stat strong { color: #10477f !important; }
+.stat span, .report-stat small { color: #617995 !important; }
+
+.panel h2, .page-heading h1, .feature-card h3 {
+  color: #123b68 !important;
+}
+
+/* Table surfaces */
+.table-wrap {
+  border-color: #cfdef0 !important;
+  background: rgba(239,246,255,.72);
+}
+th {
+  background: #dce9f8 !important;
+  color: #315779 !important;
+  border-color: #cfdef0 !important;
+}
+td { border-color: #dce6f2 !important; }
+tbody tr { transition: background .2s ease, transform .2s ease; }
+tbody tr:hover { background: #e2effd !important; }
+
+/* Inputs and controls */
+input, textarea, select {
+  color: #173858;
+  border-color: #c7d8eb !important;
+  background: #f5f9ff !important;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease !important;
+}
+input:focus, textarea:focus, select:focus {
+  background: #fff !important;
+  border-color: #438bd0 !important;
+  box-shadow: 0 0 0 4px rgba(50,126,196,.14) !important;
+}
+input::placeholder, textarea::placeholder { color: #8da2bb !important; }
+
+/* Buttons and page transitions */
+button, .primary, .secondary, .table-action {
+  transition: transform .22s ease, box-shadow .22s ease, background .22s ease,
+              filter .22s ease !important;
+}
+button:hover:not(:disabled), .primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+.primary, button.primary {
+  background: linear-gradient(135deg, #287ac4, #10518f) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 15px rgba(16,81,143,.18);
+}
+.primary:hover, button.primary:hover {
+  background: linear-gradient(135deg, #348bd7, #1764a9) !important;
+  box-shadow: 0 9px 20px rgba(16,81,143,.24);
+}
+.secondary {
+  background: #e1edf9 !important;
+  color: #244f78 !important;
+  border: 1px solid #c7daef !important;
+}
+.quiet { background: #e8f0fa !important; color: #315675 !important; }
+.table-action { background: #deebf9 !important; color: #174f86 !important; }
+
+/* Dialogs */
+dialog {
+  border-color: #c7d9ed !important;
+  box-shadow: 0 28px 90px rgba(5,30,62,.30) !important;
+  animation: dialogBlueIn .32s cubic-bezier(.2,.8,.2,1) both;
+}
+dialog::backdrop {
+  background: rgba(5,25,51,.62) !important;
+  backdrop-filter: blur(7px);
+}
+@keyframes dialogBlueIn {
+  from { opacity: 0; transform: translateY(20px) scale(.975); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.workspace-page.active {
+  animation: pageSlideIn .34s ease both !important;
+}
+@keyframes pageSlideIn {
+  from { opacity: 0; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.app-footer { color: #7188a4 !important; }
+
+@media (max-width: 720px) {
+  body { background: linear-gradient(160deg, #e8f0fb, #edf4fc 65%, #e2edf9); }
+  .welcome { animation-duration: 16s, .65s; }
+  .app-sidebar {
+    background: linear-gradient(90deg, #082b55, #10477f) !important;
+    box-shadow: 0 -6px 24px rgba(5,30,62,.18) !important;
+  }
+}
+
+/* Respect the visitor's motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
