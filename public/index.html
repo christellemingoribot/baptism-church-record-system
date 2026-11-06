@@ -2197,29 +2197,26 @@ body{background:#eef2f7;color:var(--ink)}
             </div>
             <button type="button" id="newRecord" class="primary">＋ Add record</button>
         </section>
-<div class="stats">
+<div class="stats dashboard-stats">
     <div class="stat">
-        <span class="stat-ic">
-            <img src="Total records icon.png" alt="Total records icon" class="stat-img-icon">
-        </span>
+        <span class="stat-ic stat-icon-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 11a4 4 0 1 0-3.8-5.2A5 5 0 0 1 16 11ZM8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.3 0-6 1.7-6 3.8V20h12v-3.2C14 14.7 11.3 13 8 13Zm8 .1c-.5 0-1 .1-1.5.2 1.5 1 2.5 2.3 2.5 3.9V20h5v-3.2c0-2.1-2.7-3.7-6-3.7Z"/></svg></span>
         <span>Total records</span>
         <strong id="total" data-target="0">0</strong>
     </div>
-
     <div class="stat">
-        <span class="stat-ic">
-            <img src="Baptisms this year icon.png" alt="Baptisms this year icon" class="stat-img-icon">
-        </span>
-        <span>Baptisms this year</span>
-        <strong id="thisYear" data-target="0">0</strong>
+        <span class="stat-ic stat-icon-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="4" r="3"/><path d="M9 8h6l2 5-2 1-1-3v10h-2v-6h-1v6H9V11l-1 3-2-1 3-5Z"/></svg></span>
+        <span>Male</span>
+        <strong id="maleTotal" data-target="0">0</strong>
     </div>
-
     <div class="stat">
-        <span class="stat-ic">
-            <img src="Latest baptism date icon.png" alt="Latest baptism date icon" class="stat-img-icon">
-        </span>
-        <span>Latest baptism date</span>
-        <strong id="latest">—</strong>
+        <span class="stat-ic stat-icon-pink" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="4" r="3"/><path d="M9 8h6l3 7h-4l2 7h-3l-1-5-1 5H8l2-7H6l3-7Z"/></svg></span>
+        <span>Female</span>
+        <strong id="femaleTotal" data-target="0">0</strong>
+    </div>
+    <div class="stat">
+        <span class="stat-ic stat-icon-gold" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 2v6M17 2v6M3 10h18" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 14h3v3H7zM13 14h3v3h-3z"/></svg></span>
+        <span>This month</span>
+        <strong id="thisMonth" data-target="0">0</strong>
     </div>
 </div>
         <section class="panel">
@@ -2769,13 +2766,16 @@ function renderRecords() {
     const q = $("#search").value.trim();
     animateCount($("#total"), recordsCache.length);
 
-    const year = new Date().getFullYear();
-    animateCount($("#thisYear"),
-        recordsCache.filter((r) => String(r.baptismDate || "").startsWith(String(year))).length);
-
-    $("#latest").textContent = recordsCache.length
-        ? recordsCache.reduce((a, b) => (String(a.baptismDate) > String(b.baptismDate) ? a : b)).baptismDate || "—"
-        : "—";
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const yearRecords = recordsCache.filter((r) => String(r.baptismDate || "").startsWith(String(year)));
+    const maleCount = recordsCache.filter((r) => /^(male|m)$/i.test(String(r.gender || "").trim())).length;
+    const femaleCount = recordsCache.filter((r) => /^(female|f)$/i.test(String(r.gender || "").trim())).length;
+    const monthCount = recordsCache.filter((r) => String(r.baptismDate || "").startsWith(`${year}-${month}`)).length;
+    animateCount($("#maleTotal"), maleCount);
+    animateCount($("#femaleTotal"), femaleCount);
+    animateCount($("#thisMonth"), monthCount);
 
     $("#resultCount").textContent =
         recordsCache.length + " record" + (recordsCache.length === 1 ? "" : "s") +
@@ -3180,7 +3180,23 @@ $("#printCertificate").addEventListener("click", () => {
     printWindow.document.write(`
         <!DOCTYPE html>
         <html lang="en">
-        <head><meta charset="UTF-8"><title>Baptismal Certificate</title><style>${printStyles}</style></head>
+        <head><meta charset="UTF-8"><title>Baptismal Certificate</title><style>${printStyles}
+/* Dashboard icon and logout contrast fix */
+.dashboard-stats { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 12px !important; }
+.dashboard-stats .stat { min-width: 0; padding: 18px 12px 18px 68px !important; border-color: #dce6f3; background: linear-gradient(145deg,#fff 0%,#f7faff 100%); }
+.dashboard-stats .stat-ic { left: 14px !important; width: 42px !important; height: 42px !important; display: grid !important; place-items: center !important; border-radius: 50% !important; background: #e7f0ff !important; border: 1px solid #d5e5ff !important; box-shadow: 0 3px 9px rgba(12,55,110,.10) !important; color: #1764c0 !important; }
+.dashboard-stats .stat-ic svg { width: 25px; height: 25px; display: block; fill: currentColor; }
+.dashboard-stats .stat-ic.stat-icon-pink { color: #e63d88 !important; background: #fff0f6 !important; border-color: #ffd6e7 !important; }
+.dashboard-stats .stat-ic.stat-icon-gold { color: #a87917 !important; background: #fff6df !important; border-color: #f3dfad !important; }
+.dashboard-stats .stat > span:not(.stat-ic) { font-size: 12px; color: #5a6d86; }
+.dashboard-stats .stat strong { font-size: clamp(21px,2vw,29px); color: #102f5a; }
+.app-sidebar .sidebar-bottom button { width: 100%; display: flex; align-items: center; gap: 11px; padding: 11px 12px; border: 1px solid rgba(255,220,145,.3) !important; border-radius: 9px; background: transparent !important; color: #f5d995 !important; box-shadow: none !important; text-align: left; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .18s ease,color .18s ease,border-color .18s ease; }
+.app-sidebar .sidebar-bottom button:hover { background: linear-gradient(100deg,#bd8b2f,#e2b957) !important; color: #09264b !important; border-color: #f1d18b !important; }
+.app-sidebar .sidebar-bottom button .nav-icon { color: inherit; font-size: 17px; }
+@media (max-width: 1000px) { .dashboard-stats { grid-template-columns: repeat(2,minmax(0,1fr)) !important; } }
+@media (max-width: 720px) { .dashboard-stats { grid-template-columns: repeat(2,minmax(0,1fr)) !important; } .dashboard-stats .stat { padding: 14px 10px !important; } .dashboard-stats .stat-ic { position: relative !important; top: auto !important; left: auto !important; transform: none !important; margin-bottom: 8px !important; } }
+
+</style></head>
         <body>${certificateDesign.outerHTML}
         <script>
             window.onload = function () { window.focus(); window.print(); };
