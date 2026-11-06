@@ -1336,3 +1336,29 @@ input, select, textarea { min-height: 44px; }
 @media (prefers-reduced-motion: reduce) {
     .stats .stat-ic .stat-img-icon { animation: none !important; }
 }
+
+/* Admin sign-in: match the main system's warm burgundy / gold identity. */
+.admin-auth-shell {
+  background: radial-gradient(circle at 12% 12%, rgba(168,68,48,.13), transparent 34%),
+              radial-gradient(circle at 90% 88%, rgba(198,155,82,.17), transparent 32%),
+              #f8f6f2;
+}
+.admin-auth-card { border-color: #eadfd8; box-shadow: 0 22px 65px rgba(91,43,34,.12); }
+.admin-auth-card .eyebrow { color: #c18b3d; }
+.admin-auth-card h1 { color: #7d3025; }
+.admin-auth-card input { background: #fffdfa; border-color: #e5d8d0; color: #392b28; }
+.admin-auth-card input:focus { border-color: #a84430; box-shadow: 0 0 0 4px rgba(168,68,48,.12); outline: 0; }
+.admin-auth-card .admin-submit { display:flex; align-items:center; justify-content:center; gap:14px; background:linear-gradient(135deg,#a84430,#7d3025); color:#fff; border:0; box-shadow:0 8px 18px rgba(125,48,37,.18); transition:transform .2s,filter .2s; }
+.admin-auth-card .admin-submit:hover:not(:disabled) { filter:brightness(1.06); transform:translateY(-1px); }
+.admin-auth-card .admin-submit:disabled { opacity:.82; cursor:wait; }
+.admin-auth-card .admin-submit.is-loading { background:linear-gradient(135deg,#7d3025,#57231d); }
+.admin-loading { display:flex; align-items:center; justify-content:center; gap:11px; margin-top:18px; color:#7d3025; font-size:12px; font-weight:650; }
+.admin-loading[hidden] { display:none; }
+.loading-spinner { width:19px; height:19px; border:2px solid rgba(168,68,48,.2); border-top-color:#a84430; border-radius:50%; animation:adminSpin .7s linear infinite; }
+@keyframes adminSpin { to { transform:rotate(360deg); } }
+.back-link { color:#8b4a3e; }
+.account-logout-row { margin-top:8px; }
+.logout-settings-btn { border:0; border-radius:9px; padding:10px 16px; background:linear-gradient(135deg,#a84430,#7d3025); color:#fff; font-weight:700; cursor:pointer; white-space:nowrap; }
+.logout-settings-btn:hover { filter:brightness(1.08); }
+#verifyNumber { font-variant-numeric:tabular-nums; }
+@media(prefers-reduced-motion:reduce) { .loading-spinner { animation-duration:1.8s; } }

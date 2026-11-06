@@ -18,22 +18,31 @@
       <form id="adminLoginForm">
         <label>Email address<input name="email" type="email" required autocomplete="username" placeholder="Administrator email"></label>
         <label>Password<input name="password" type="password" required autocomplete="current-password" placeholder="Administrator password"></label>
-        <button class="primary full" type="submit">Access admin dashboard <span>→</span></button>
+        <button class="primary full admin-submit" type="submit"><span class="button-label">Access admin dashboard</span><span class="button-arrow" aria-hidden="true">→</span></button>
         <p id="adminError" class="error" role="alert" aria-live="polite"></p>
       </form>
       <a class="back-link" href="/">← Back to user sign in</a>
       <p class="auth-footnote">All administrator actions are protected by server-side role checks.</p>
+      <div class="admin-loading" id="adminLoading" hidden role="status" aria-live="polite">
+        <span class="loading-spinner" aria-hidden="true"></span>
+        <span>Verifying administrator account…</span>
+      </div>
     </section>
   </main>
   <script>
     const form = document.getElementById('adminLoginForm');
     const errorBox = document.getElementById('adminError');
+    const loading = document.getElementById('adminLoading');
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       const button = form.querySelector('button[type="submit"]');
       button.disabled = true;
-      button.textContent = 'Verifying...';
+      button.classList.add('is-loading');
+      button.querySelector('.button-label').textContent = 'Verifying...';
+      button.querySelector('.button-arrow').hidden = true;
+      loading.hidden = false;
       errorBox.textContent = '';
+      errorBox.classList.remove('success-message');
       try {
         const response = await fetch('/api/admin/login', {
           method: 'POST',
@@ -47,7 +56,10 @@
       } catch (error) {
         errorBox.textContent = error.message;
         button.disabled = false;
-        button.innerHTML = 'Access admin dashboard <span>→</span>';
+        button.classList.remove('is-loading');
+        button.querySelector('.button-label').textContent = 'Access admin dashboard';
+        button.querySelector('.button-arrow').hidden = false;
+        loading.hidden = true;
       }
     });
   </script>
