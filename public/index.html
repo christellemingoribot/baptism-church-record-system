@@ -2042,6 +2042,116 @@ header small {
     .stats .stat-ic .stat-img-icon { animation: none !important; }
 }
 
+
+
+/* =========================================================
+   NAVY & GOLD CHURCH ADMIN REDESIGN — responsive sidebar UI
+   Keeps the existing authentication, forms, and API handlers.
+========================================================= */
+:root {
+  --ink: #17263d;
+  --muted: #66758b;
+  --line: #e0e7f0;
+  --bg: #f3f6fb;
+  --brand: #1456a0;
+  --brand2: #092d58;
+  --brand-light: #e7f0fc;
+  --gold: #d6a94f;
+  --gold2: #b8892f;
+  --gold-light: #fff7e6;
+  --surface: #fff;
+  --shadow: 0 8px 28px rgba(17, 45, 83, .08);
+  --shadow-lg: 0 18px 48px rgba(17, 45, 83, .15);
+  --radius: 14px;
+}
+body { background: #f3f6fb; color: var(--ink); }
+button:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid rgba(40, 125, 218, .3); outline-offset: 2px; }
+.primary { background: linear-gradient(135deg, #176bc2, #0c4288); box-shadow: 0 5px 14px rgba(17, 86, 160, .2); }
+.primary:hover { background: linear-gradient(135deg, #0d5aaa, #082f68); }
+.secondary { background: #fff6e4; color: #815b18; border-color: #ead7a9; }
+.mark { background: linear-gradient(135deg, #176bc2, #092d58); color: #ffe4a3; }
+
+/* Authentication: clean church-branding and a navy panel */
+.auth-shell { background: #fff; grid-template-columns: minmax(300px, .92fr) 1.08fr; }
+.auth-aside { background: linear-gradient(145deg, rgba(7,35,72,.97), rgba(14,76,139,.92)), url('/logo.png') center/cover no-repeat; }
+.auth-aside::before { border-color: rgba(255,255,255,.1); }
+.auth-aside::after { border-color: rgba(230,190,101,.18); }
+.auth-aside .eyebrow { color: #f1cc79; }
+.auth-message h1 { color: #fff; }
+.auth-message h1 em { color: #f4d58d; }
+.auth-main { background: linear-gradient(135deg, #f8fbff, #eef4fc); }
+.auth-card { width: min(100%, 470px); padding: clamp(24px, 3vw, 40px); background: #fff; border: 1px solid #e3eaf4; border-radius: 20px; box-shadow: 0 18px 55px rgba(14,48,88,.11); }
+.auth-card .eyebrow { color: #1c66b2; }
+.auth-card h2 { color: #102f55; }
+.auth-tabs { background: #edf3fa; }
+.auth-tab.active { color: #0e4c8f; }
+.auth-tabs .tab-glider { background: #fff; box-shadow: 0 2px 8px rgba(13,51,94,.1); }
+.auth-card input { border-color: #dce5f0; border-radius: 9px; }
+.auth-card input:focus { border-color: #2675c7; box-shadow: 0 0 0 4px rgba(38,117,199,.1); }
+
+/* Sidebar */
+#appView:not([hidden]) { display: block !important; padding-left: 244px; min-height: 100vh; }
+.app-sidebar { position: fixed; inset: 0 auto 0 0; width: 244px; z-index: 120; display: flex; flex-direction: column; padding: 20px 13px 14px; color: #fff; background: linear-gradient(180deg, #0b2d56 0%, #092447 100%); box-shadow: 6px 0 22px rgba(8,32,63,.13); }
+.sidebar-brand { display: flex; align-items: center; gap: 11px; padding: 4px 8px 23px; border-bottom: 1px solid rgba(255,255,255,.13); }
+.sidebar-brand img { width: 55px; height: 50px; object-fit: contain; background: rgba(255,255,255,.96); border-radius: 10px; }
+.sidebar-brand strong { display: block; font-size: 13px; line-height: 1.25; color: #fff; }
+.sidebar-brand small { display: block; margin-top: 4px; color: #bfd3ec; font-size: 10px; }
+.sidebar-nav { display: grid; gap: 5px; padding-top: 20px; }
+.sidebar-link { display: flex; align-items: center; gap: 11px; width: 100%; min-height: 40px; padding: 10px 12px; border-radius: 9px; border: 0; color: #dce9f8; background: transparent; text-decoration: none; text-align: left; font-size: 12px; font-weight: 600; transition: background .18s ease, color .18s ease; }
+.sidebar-link span { display: inline-grid; place-items: center; width: 17px; font-size: 17px; line-height: 1; }
+.sidebar-link:hover, .sidebar-link.active { color: #fff; background: linear-gradient(90deg, #247bd3, #1763b1); }
+.sidebar-bottom { margin-top: auto; }
+.sidebar-secure { display: flex; align-items: center; gap: 9px; padding: 12px 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.06); }
+.sidebar-secure > span { color: #6ee7a2; font-size: 12px; }
+.sidebar-secure b, .sidebar-secure small { display: block; }
+.sidebar-secure b { font-size: 11px; }
+.sidebar-secure small { color: #b8cce4; font-size: 9px; }
+
+/* Main content and top bar */
+#appView header { position: sticky; top: 0; width: 100%; min-height: 72px; padding: 12px clamp(18px, 3vw, 38px); background: rgba(255,255,255,.94); border-bottom: 1px solid #e2e9f2; box-shadow: 0 4px 15px rgba(17,45,83,.035); }
+#appView header strong { color: #102f55; }
+#appView header .header-logo { width: 48px; height: 44px; }
+#appView main { max-width: 1480px; margin: 26px auto; padding: 0 clamp(16px, 3vw, 38px); }
+.welcome { min-height: 210px; padding: clamp(24px, 4vw, 38px); border: 0; border-radius: 17px; color: #fff; background: linear-gradient(105deg, rgba(7,37,77,.97) 0%, rgba(15,75,137,.92) 58%, rgba(19,96,165,.72) 100%), url('/logo.png') right 30px center/auto 90% no-repeat; box-shadow: 0 12px 28px rgba(9,45,88,.18); }
+.welcome .eyebrow { color: #f3d18b; letter-spacing: 1.5px; }
+.welcome h1 { color: #fff; font-family: Inter, system-ui, sans-serif; font-size: clamp(27px, 3vw, 38px); font-weight: 800; letter-spacing: -.04em; }
+.welcome .muted { color: #e0ebf8; }
+.welcome .primary { background: #fff; color: #104a8c; box-shadow: none; }
+.stats { gap: 15px; }
+.stat { border: 1px solid #e2e9f2; border-radius: 13px; box-shadow: var(--shadow); }
+.stat > span:not(.stat-ic) { color: #62738a; }
+.stat strong { color: #102f55; }
+.panel { border: 1px solid #e1e8f1; border-radius: 14px; box-shadow: var(--shadow); }
+.panel h2 { color: #102f55; font-family: Inter, system-ui, sans-serif; font-size: 19px; }
+.panel-head { border-bottom-color: #e7edf5; }
+table thead th { background: #eef4fb; color: #193b63; }
+table tbody tr:hover { background: #f6faff; }
+.search-wrap input, input, textarea, select { border-color: #dbe4ef; }
+.app-footer { max-width: none; margin: 12px 24px 28px; color: #8190a4; }
+
+@media (max-width: 900px) {
+  #appView:not([hidden]) { padding-left: 0; padding-bottom: 76px; }
+  .app-sidebar { inset: auto 0 0 0; width: 100%; height: 68px; padding: 6px 8px; flex-direction: row; align-items: center; overflow-x: auto; box-shadow: 0 -5px 22px rgba(8,32,63,.16); }
+  .sidebar-brand, .sidebar-bottom { display: none; }
+  .sidebar-nav { display: flex; align-items: center; gap: 5px; padding: 0; width: 100%; }
+  .sidebar-link { flex: 1 0 auto; width: auto; min-width: 70px; min-height: 52px; padding: 6px 9px; flex-direction: column; justify-content: center; gap: 3px; font-size: 10px; text-align: center; }
+  .sidebar-link span { font-size: 16px; }
+  #appView header { padding: 10px 15px; }
+  #appView main { margin: 18px auto; padding: 0 14px; }
+  .welcome { background-position: right -30px center; background-size: auto 65%; }
+}
+@media (max-width: 560px) {
+  .auth-card { padding: 24px 20px; }
+  .welcome { min-height: 190px; padding: 22px 18px; background-image: linear-gradient(105deg, rgba(7,37,77,.98), rgba(15,75,137,.9)); }
+  .welcome h1 { font-size: 27px; }
+  .welcome .primary { width: 100%; }
+  .stats { grid-template-columns: 1fr; }
+  .stat:nth-child(3) { grid-column: auto; }
+  .panel { padding: 16px; }
+  #appView header .user-chip { gap: 6px; }
+  #appView header .who { display: none; }
+}
+
 </style>
 <base target="_blank">
 </head>
@@ -2113,7 +2223,25 @@ header small {
 <!-- ==================== DASHBOARD ==================== -->
 <div id="appView" hidden>
 
-    <header>
+    <aside class="app-sidebar" aria-label="Main navigation">
+        <div class="sidebar-brand">
+            <img src="/logo.png" alt="Church logo">
+            <div><strong>St. Mary Parish</strong><small>Baptism Records</small></div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#dashboardTop" class="sidebar-link active" data-nav="dashboardTop"><span>⌂</span> Dashboard</a>
+            <a href="#registryPanel" class="sidebar-link" data-nav="registryPanel"><span>▤</span> Baptism Records</a>
+            <button type="button" class="sidebar-link" id="sidebarNewRecord"><span>＋</span> New Registration</button>
+            <a href="#registryPanel" class="sidebar-link" data-nav="registryPanel"><span>⌕</span> Search Records</a>
+            <a href="#aiPanel" class="sidebar-link" data-nav="aiPanel"><span>▥</span> AI Insights</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="sidebar-secure"><span>●</span><div><b>Secure Registry</b><small>Server-connected records</small></div></div>
+            <button type="button" class="sidebar-link" id="sidebarLogout"><span>⇥</span> Sign out</button>
+        </div>
+    </aside>
+
+    <header id="dashboardTop">
         <div>
             <img class="header-logo" src="/logo.png" alt="AI-Based Baptist Church Record System logo">
             <div>
@@ -2168,7 +2296,7 @@ header small {
         <strong id="latest">—</strong>
     </div>
 </div>
-        <section class="panel">
+        <section class="panel" id="registryPanel">
             <div class="panel-head">
                 <div>
                     <h2>Registry</h2>
@@ -2203,7 +2331,7 @@ header small {
             </p>
         </section>
 
-        <section class="panel ai-panel">
+        <section class="panel ai-panel" id="aiPanel">
             <div>
                 <p class="eyebrow">AI-ASSISTED INSIGHTS</p>
                 <h2>Registry overview</h2>
@@ -2488,6 +2616,24 @@ function applyRoleUI() {
         new Date().toLocaleDateString("en-PH", { weekday: "long", year: "numeric", month: "long", day: "numeric" }) +
         " — manage and securely find baptism records.";
 }
+
+/* Sidebar navigation: uses existing dashboard sections and existing record/logout handlers. */
+const sidebarNewRecord = document.getElementById("sidebarNewRecord");
+if (sidebarNewRecord) sidebarNewRecord.addEventListener("click", () => {
+    const newRecordButton = document.getElementById("newRecord");
+    if (newRecordButton && !newRecordButton.hidden) newRecordButton.click();
+    else toast("info", "Read-only access", "Your account cannot create or edit records.");
+});
+const sidebarLogout = document.getElementById("sidebarLogout");
+if (sidebarLogout) sidebarLogout.addEventListener("click", () => document.getElementById("logout")?.click());
+document.querySelectorAll(".sidebar-link[data-nav]").forEach((link) => {
+    link.addEventListener("click", () => {
+        document.querySelectorAll(".sidebar-link[data-nav]").forEach((item) => item.classList.remove("active"));
+        link.classList.add("active");
+        const target = document.getElementById(link.dataset.nav);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+});
 
 /* =========================================================
    AUTH TABS / PASSWORD TOGGLES / STRENGTH METER
