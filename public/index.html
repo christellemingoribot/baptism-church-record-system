@@ -1048,8 +1048,8 @@ dialog::backdrop {
     background-size: cover;
     background-position: center 42%;
     background-repeat: no-repeat;
-    opacity: .13;
-    filter: saturate(.78);
+    opacity: .22;
+    filter: saturate(.88);
     border-radius: 8px;
 }
 
@@ -3041,7 +3041,7 @@ function setCertificateText(selector, value, fallback = "—") {
 }
 
 function renderCertificate(record) {
-    setCertificateText("#certChurch", record.church, "CHURCH / PARISH NAME");
+    setCertificateText("#certChurch", "FAITH • RECORD • PRESERVE", "FAITH • RECORD • PRESERVE");
     setCertificateText("#certChildName",
         ((record.firstName || "") + " " + (record.lastName || "")).trim(), "CHILD'S FULL NAME");
     setCertificateText("#certBirthDate", formatCertificateDate(record.birthDate));
@@ -3267,7 +3267,7 @@ console.log("Baptism Church Record System — backend-only edition — loaded.")
 
   // The existing registry and add/edit/certificate flows remain the source of truth.
   const dashboard = document.createElement('section'); dashboard.className='workspace-page active'; dashboard.dataset.pageContent='dashboard';
-  const recent = document.createElement('section'); recent.className='panel'; recent.innerHTML=`<div class="panel-head"><div><h2>Recent Baptism Records</h2><p class="muted">Latest entries from the connected church registry.</p></div><button type="button" class="secondary" data-go="records">View all records →</button></div><div class="table-wrap"><table><thead><tr><th>Child's name</th><th>Date of baptism</th><th>Parents / guardian</th><th>Church</th></tr></thead><tbody id="recentRows"></tbody></table></div><p id="recentEmpty" class="empty" hidden>No baptism records are available yet.</p>`;
+  const recent = document.createElement('section'); recent.className='panel'; recent.innerHTML=`<div class="panel-head"><div><h2>Recent Baptism Records</h2><p class="muted">Latest entries from the connected church registry.</p></div><button type="button" class="secondary" data-go="records">View all records →</button></div><div class="table-wrap"><table><thead><tr><th>Child's name</th><th>Date of baptism</th><th>Parents / guardian</th><th>Church</th><th>Actions</th></tr></thead><tbody id="recentRows"></tbody></table></div><p id="recentEmpty" class="empty" hidden>No baptism records are available yet.</p>`;
   dashboard.append(welcome, stats, recent, aiPanel);
 
   const recordsPage=document.createElement('section');recordsPage.className='workspace-page';recordsPage.dataset.pageContent='records';recordsPage.append(registryPanel);
@@ -3305,7 +3305,14 @@ console.log("Baptism Church Record System — backend-only edition — loaded.")
 
   function fmtDate(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});}
   function safe(v){return String(v??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-  function renderRecent(){const target=document.getElementById('recentRows'),empty=document.getElementById('recentEmpty');if(!target)return;const rs=Array.isArray(window.recordsCache)?window.recordsCache:(typeof recordsCache!=='undefined'?recordsCache:[]);const sorted=[...rs].sort((a,b)=>String(b.baptismDate||'').localeCompare(String(a.baptismDate||''))).slice(0,5);target.innerHTML=sorted.map(r=>`<tr><td><strong>${safe([r.firstName,r.lastName].filter(Boolean).join(' '))}</strong></td><td>${safe(fmtDate(r.baptismDate))}</td><td>${safe(r.parents||'—')}</td><td>${safe(r.church||'—')}</td></tr>`).join('');empty.hidden=sorted.length>0;}
+  function renderRecent(){const target=document.getElementById('recentRows'),empty=document.getElementById('recentEmpty');if(!target)return;const rs=Array.isArray(window.recordsCache)?window.recordsCache:(typeof recordsCache!=='undefined'?recordsCache:[]);const sorted=[...rs].sort((a,b)=>String(b.baptismDate||'').localeCompare(String(a.baptismDate||''))).slice(0,5);target.innerHTML=sorted.map(r=>`<tr><td><strong>${safe([r.firstName,r.lastName].filter(Boolean).join(' '))}</strong></td><td>${safe(fmtDate(r.baptismDate))}</td><td>${safe(r.parents||'—')}</td><td>${safe(r.church||'—')}</td><td>${currentRole === 'admin' ? `<button type="button" class="table-action del" data-dashboard-delete="${safe(r._id)}">🗑 Delete</button>` : '<span class="muted">Admin only</span>'}</td></tr>`).join('');empty.hidden=sorted.length>0;}
+  document.getElementById('recentRows')?.addEventListener('click', (event) => {
+    const deleteButton = event.target.closest('[data-dashboard-delete]');
+    if (deleteButton && currentRole === 'admin') {
+      deleteRecord(deleteButton.dataset.dashboardDelete);
+    }
+  });
+
   function renderReport(){const rs=typeof recordsCache!=='undefined'?recordsCache:[];const year=new Date().getFullYear();const current=rs.filter(r=>String(r.baptismDate||'').startsWith(String(year)));const total=rs.length;const monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];const counts=Array(12).fill(0);current.forEach(r=>{const m=Number(String(r.baptismDate||'').slice(5,7));if(m>=1&&m<=12)counts[m-1]++;});const max=Math.max(1,...counts);const stats=document.getElementById('reportStats');if(stats)stats.innerHTML=`<div class="report-stat"><small>Total baptism records</small><strong>${total}</strong></div><div class="report-stat"><small>Baptisms in ${year}</small><strong>${current.length}</strong></div><div class="report-stat"><small>Most recent baptism</small><strong style="font-size:17px">${safe(fmtDate([...rs].sort((a,b)=>String(b.baptismDate||'').localeCompare(String(a.baptismDate||'')))[0]?.baptismDate))}</strong></div>`;const chart=document.getElementById('monthChart');if(chart)chart.innerHTML=counts.map((n,i)=>`<div class="chart-col" title="${monthNames[i]}: ${n}"><div class="chart-bar" style="height:${Math.max(2,n/max*145)}px"></div><small>${monthNames[i]}</small></div>`).join('');const gender=document.getElementById('genderReport');if(gender){const male=rs.filter(r=>/^(male|m)$/i.test(r.gender||'')).length;const female=rs.filter(r=>/^(female|f)$/i.test(r.gender||'')).length;const known=male+female;gender.innerHTML=`<div style="display:flex;justify-content:space-between;font-size:12px"><strong>Male</strong><span>${male}</span></div><div class="gender-track"><span style="width:${known?male/known*100:0}%"></span></div><div style="display:flex;justify-content:space-between;font-size:12px"><strong>Female</strong><span>${female}</span></div><div class="gender-track"><span style="width:${known?female/known*100:0}%;background:#d95d94"></span></div><small style="color:#78889b">${rs.length-known} record(s) without a recognized gender value.</small>`;}}
   function renderAccount(settingsOnly=false){const name=document.getElementById('userName')?.textContent||'Signed-in user';const role=document.getElementById('userRoleText')?.textContent||'Role not available';const email=(typeof currentUser!=='undefined'&&currentUser?.email)||'Email not exposed by current session response';const target=document.getElementById('accountSummary');if(target)target.innerHTML=`<div class="settings-row"><div><strong>${safe(name)}</strong><small>${safe(email)}</small></div><span class="role-badge admin">${safe(role)}</span></div>`;const setting=document.getElementById('settingsUser');if(setting)setting.textContent=`Signed in as ${name} · ${role}`;}
   document.getElementById('refreshReport')?.addEventListener('click',()=>{renderReport();toast('success','Report refreshed','Updated using the latest records currently loaded.');});
