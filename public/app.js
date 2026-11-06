@@ -131,9 +131,23 @@ registerForm.addEventListener("submit", async (event) => {
     finally { button.disabled = false; button.innerHTML = 'Create account <span>→</span>'; }
 });
 
+function isAdminUser() {
+    return currentRole === "admin";
+}
+
+function requireAdmin(action = "perform this action") {
+    if (isAdminUser()) return true;
+
+    alert(`Only an administrator can ${action}.`);
+    return false;
+}
+
 function applyRoleUI() {
-    const isAdmin = currentRole === "admin";
-    $("#newRecord").hidden = !isAdmin;
+    const isAdmin = isAdminUser();
+    const addRecordButton = $("#newRecord");
+    addRecordButton.hidden = !isAdmin;
+    addRecordButton.disabled = !isAdmin;
+    addRecordButton.setAttribute("aria-hidden", String(!isAdmin));
     $("#dashboardRole").textContent = isAdmin ? "ADMINISTRATOR DASHBOARD" : "USER ACCESS · READ ONLY";
     $("#signedInLabel").textContent = isAdmin ? "Administrator" : "Signed in · Registry viewer";
     $("#aiButton").hidden = !isAdmin;
@@ -361,6 +375,8 @@ $("#search").addEventListener("input", () => {
 // ==========================================
 
 function openBlankRecordForm() {
+    if (!requireAdmin("add baptism records")) return;
+
     recordForm.reset();
 
     recordForm.elements.id.value = "";
@@ -378,6 +394,8 @@ $("#newRecord").addEventListener("click", openBlankRecordForm);
 // ==========================================
 
 function editRecord(id) {
+    if (!requireAdmin("edit baptism records")) return;
+
     const record = recordsCache.find(
         (item) => String(item._id) === String(id)
     );
@@ -435,6 +453,13 @@ $("#cancelDialog").addEventListener("click", () => {
 recordForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
+    // Client-side guard improves the interface; server-side adminOnly
+    // middleware remains the actual security boundary.
+    if (!requireAdmin("save baptism records")) {
+        recordDialog.close();
+        return;
+    }
+
     const body = Object.fromEntries(
         new FormData(recordForm)
     );
@@ -485,6 +510,8 @@ recordForm.addEventListener("submit", async (event) => {
 // ==========================================
 
 async function deleteRecord(id) {
+    if (!requireAdmin("delete baptism records")) return;
+
     const confirmed = confirm(
         "Are you sure you want to delete this baptism record?"
     );

@@ -2521,9 +2521,22 @@ function showDashboard() {
     appView.style.display = "block";
 }
 
+function isAdminUser() {
+    return currentRole === "admin";
+}
+
+function requireAdmin(action = "perform this action") {
+    if (isAdminUser()) return true;
+    toast("error", "Administrator access only", `Only an administrator can ${action}.`);
+    return false;
+}
+
 function applyRoleUI() {
-    const isAdmin = currentRole === "admin";
-    $("#newRecord").hidden = !isAdmin;
+    const isAdmin = isAdminUser();
+    const addRecordButton = $("#newRecord");
+    addRecordButton.hidden = !isAdmin;
+    addRecordButton.disabled = !isAdmin;
+    addRecordButton.setAttribute("aria-hidden", String(!isAdmin));
     $("#dashboardRole").textContent = isAdmin ? "ADMINISTRATOR DASHBOARD" : "USER ACCESS · READ ONLY";
     $("#signedInLabel").textContent = isAdmin ? "Administrator" : "Signed in · Registry viewer";
     $("#aiButton").hidden = !isAdmin;
@@ -2894,6 +2907,7 @@ $("#searchClear").addEventListener("click", () => {
 ========================================================= */
 
 function openBlankRecordForm() {
+    if (!requireAdmin("add baptism records")) return;
     recordForm.reset();
     recordForm.elements.id.value = "";
     $("#dialogTitle").textContent = "Add baptism record";
@@ -2906,6 +2920,7 @@ function openBlankRecordForm() {
 $("#newRecord").addEventListener("click", openBlankRecordForm);
 
 function editRecord(id) {
+    if (!requireAdmin("edit baptism records")) return;
     const record = recordsCache.find((r) => String(r._id) === String(id));
     if (!record) { toast("error", "Record not found", "Please refresh the registry."); return; }
     recordForm.reset();
@@ -2935,6 +2950,11 @@ $("#cancelDialog").addEventListener("click", () => recordDialog.close());
 
 recordForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    // UI guard only; server-side adminOnly middleware is the real protection.
+    if (!requireAdmin("save baptism records")) {
+        recordDialog.close();
+        return;
+    }
     const body = Object.fromEntries(new FormData(recordForm));
     const id = body.id;
     delete body.id;
@@ -2960,6 +2980,7 @@ recordForm.addEventListener("submit", async (event) => {
 });
 
 async function deleteRecord(id) {
+    if (!requireAdmin("delete baptism records")) return;
     const record = recordsCache.find((r) => String(r._id) === String(id));
     const label = record ? (record.firstName + " " + record.lastName).trim() : "this record";
     const ok = await confirmAction("Delete this record?",

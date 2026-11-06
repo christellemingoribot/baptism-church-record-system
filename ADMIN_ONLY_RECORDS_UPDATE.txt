@@ -1,0 +1,21 @@
+ADMIN-ONLY RECORD ACCESS UPDATE
+
+What changed:
+- Only a signed-in administrator can open the Add Baptism Record form.
+- The add/edit/delete controls are guarded in the browser for regular users.
+- The server already enforces adminOnly on POST /api/records, PUT /api/records/:id,
+  and DELETE /api/records/:id. These server-side checks remain the actual security
+  boundary, so bypassing the browser UI does not grant permission.
+- Regular registered accounts are assigned the "user" role. They cannot choose
+  or self-assign the administrator role.
+- Administrator sign-in remains at /admin-portal.
+
+Deploy:
+1. Keep your existing Render environment variables and MongoDB database.
+2. Deploy this updated source code to the existing Render service.
+3. Do NOT upload or commit your real .env file. Use .env.example as a reference.
+4. Sign in as a regular user and confirm Add record is hidden.
+5. Sign out, visit /admin-portal, sign in with the configured admin credentials,
+   and confirm Add record is available.
+
+Existing database records are not deleted or changed by this UI/permission update.
