@@ -2042,118 +2042,28 @@ header small {
     .stats .stat-ic .stat-img-icon { animation: none !important; }
 }
 
-
-
-/* =========================================================
-   NAVY & GOLD CHURCH ADMIN REDESIGN — responsive sidebar UI
-   Keeps the existing authentication, forms, and API handlers.
-========================================================= */
-:root {
-  --ink: #17263d;
-  --muted: #66758b;
-  --line: #e0e7f0;
-  --bg: #f3f6fb;
-  --brand: #1456a0;
-  --brand2: #092d58;
-  --brand-light: #e7f0fc;
-  --gold: #d6a94f;
-  --gold2: #b8892f;
-  --gold-light: #fff7e6;
-  --surface: #fff;
-  --shadow: 0 8px 28px rgba(17, 45, 83, .08);
-  --shadow-lg: 0 18px 48px rgba(17, 45, 83, .15);
-  --radius: 14px;
-}
-body { background: #f3f6fb; color: var(--ink); }
-button:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid rgba(40, 125, 218, .3); outline-offset: 2px; }
-.primary { background: linear-gradient(135deg, #176bc2, #0c4288); box-shadow: 0 5px 14px rgba(17, 86, 160, .2); }
-.primary:hover { background: linear-gradient(135deg, #0d5aaa, #082f68); }
-.secondary { background: #fff6e4; color: #815b18; border-color: #ead7a9; }
-.mark { background: linear-gradient(135deg, #176bc2, #092d58); color: #ffe4a3; }
-
-/* Authentication: clean church-branding and a navy panel */
-.auth-shell { background: #fff; grid-template-columns: minmax(300px, .92fr) 1.08fr; }
-.auth-aside { background: linear-gradient(145deg, rgba(7,35,72,.97), rgba(14,76,139,.92)), url('/logo.png') center/cover no-repeat; }
-.auth-aside::before { border-color: rgba(255,255,255,.1); }
-.auth-aside::after { border-color: rgba(230,190,101,.18); }
-.auth-aside .eyebrow { color: #f1cc79; }
-.auth-message h1 { color: #fff; }
-.auth-message h1 em { color: #f4d58d; }
-.auth-main { background: linear-gradient(135deg, #f8fbff, #eef4fc); }
-.auth-card { width: min(100%, 470px); padding: clamp(24px, 3vw, 40px); background: #fff; border: 1px solid #e3eaf4; border-radius: 20px; box-shadow: 0 18px 55px rgba(14,48,88,.11); }
-.auth-card .eyebrow { color: #1c66b2; }
-.auth-card h2 { color: #102f55; }
-.auth-tabs { background: #edf3fa; }
-.auth-tab.active { color: #0e4c8f; }
-.auth-tabs .tab-glider { background: #fff; box-shadow: 0 2px 8px rgba(13,51,94,.1); }
-.auth-card input { border-color: #dce5f0; border-radius: 9px; }
-.auth-card input:focus { border-color: #2675c7; box-shadow: 0 0 0 4px rgba(38,117,199,.1); }
-
-/* Sidebar */
-#appView:not([hidden]) { display: block !important; padding-left: 244px; min-height: 100vh; }
-.app-sidebar { position: fixed; inset: 0 auto 0 0; width: 244px; z-index: 120; display: flex; flex-direction: column; padding: 20px 13px 14px; color: #fff; background: linear-gradient(180deg, #0b2d56 0%, #092447 100%); box-shadow: 6px 0 22px rgba(8,32,63,.13); }
-.sidebar-brand { display: flex; align-items: center; gap: 11px; padding: 4px 8px 23px; border-bottom: 1px solid rgba(255,255,255,.13); }
-.sidebar-brand img { width: 55px; height: 50px; object-fit: contain; background: rgba(255,255,255,.96); border-radius: 10px; }
-.sidebar-brand strong { display: block; font-size: 13px; line-height: 1.25; color: #fff; }
-.sidebar-brand small { display: block; margin-top: 4px; color: #bfd3ec; font-size: 10px; }
-.sidebar-nav { display: grid; gap: 5px; padding-top: 20px; }
-.sidebar-link { display: flex; align-items: center; gap: 11px; width: 100%; min-height: 40px; padding: 10px 12px; border-radius: 9px; border: 0; color: #dce9f8; background: transparent; text-decoration: none; text-align: left; font-size: 12px; font-weight: 600; transition: background .18s ease, color .18s ease; }
-.sidebar-link span { display: inline-grid; place-items: center; width: 17px; font-size: 17px; line-height: 1; }
-.sidebar-link:hover, .sidebar-link.active { color: #fff; background: linear-gradient(90deg, #247bd3, #1763b1); }
-.sidebar-bottom { margin-top: auto; }
-.sidebar-secure { display: flex; align-items: center; gap: 9px; padding: 12px 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.06); }
-.sidebar-secure > span { color: #6ee7a2; font-size: 12px; }
-.sidebar-secure b, .sidebar-secure small { display: block; }
-.sidebar-secure b { font-size: 11px; }
-.sidebar-secure small { color: #b8cce4; font-size: 9px; }
-
-/* Main content and top bar */
-#appView header { position: sticky; top: 0; width: 100%; min-height: 72px; padding: 12px clamp(18px, 3vw, 38px); background: rgba(255,255,255,.94); border-bottom: 1px solid #e2e9f2; box-shadow: 0 4px 15px rgba(17,45,83,.035); }
-#appView header strong { color: #102f55; }
-#appView header .header-logo { width: 48px; height: 44px; }
-#appView main { max-width: 1480px; margin: 26px auto; padding: 0 clamp(16px, 3vw, 38px); }
-.welcome { min-height: 210px; padding: clamp(24px, 4vw, 38px); border: 0; border-radius: 17px; color: #fff; background: linear-gradient(105deg, rgba(7,37,77,.97) 0%, rgba(15,75,137,.92) 58%, rgba(19,96,165,.72) 100%), url('/logo.png') right 30px center/auto 90% no-repeat; box-shadow: 0 12px 28px rgba(9,45,88,.18); }
-.welcome .eyebrow { color: #f3d18b; letter-spacing: 1.5px; }
-.welcome h1 { color: #fff; font-family: Inter, system-ui, sans-serif; font-size: clamp(27px, 3vw, 38px); font-weight: 800; letter-spacing: -.04em; }
-.welcome .muted { color: #e0ebf8; }
-.welcome .primary { background: #fff; color: #104a8c; box-shadow: none; }
-.stats { gap: 15px; }
-.stat { border: 1px solid #e2e9f2; border-radius: 13px; box-shadow: var(--shadow); }
-.stat > span:not(.stat-ic) { color: #62738a; }
-.stat strong { color: #102f55; }
-.panel { border: 1px solid #e1e8f1; border-radius: 14px; box-shadow: var(--shadow); }
-.panel h2 { color: #102f55; font-family: Inter, system-ui, sans-serif; font-size: 19px; }
-.panel-head { border-bottom-color: #e7edf5; }
-table thead th { background: #eef4fb; color: #193b63; }
-table tbody tr:hover { background: #f6faff; }
-.search-wrap input, input, textarea, select { border-color: #dbe4ef; }
-.app-footer { max-width: none; margin: 12px 24px 28px; color: #8190a4; }
-
-@media (max-width: 900px) {
-  #appView:not([hidden]) { padding-left: 0; padding-bottom: 76px; }
-  .app-sidebar { inset: auto 0 0 0; width: 100%; height: 68px; padding: 6px 8px; flex-direction: row; align-items: center; overflow-x: auto; box-shadow: 0 -5px 22px rgba(8,32,63,.16); }
-  .sidebar-brand, .sidebar-bottom { display: none; }
-  .sidebar-nav { display: flex; align-items: center; gap: 5px; padding: 0; width: 100%; }
-  .sidebar-link { flex: 1 0 auto; width: auto; min-width: 70px; min-height: 52px; padding: 6px 9px; flex-direction: column; justify-content: center; gap: 3px; font-size: 10px; text-align: center; }
-  .sidebar-link span { font-size: 16px; }
-  #appView header { padding: 10px 15px; }
-  #appView main { margin: 18px auto; padding: 0 14px; }
-  .welcome { background-position: right -30px center; background-size: auto 65%; }
-}
-@media (max-width: 560px) {
-  .auth-card { padding: 24px 20px; }
-  .welcome { min-height: 190px; padding: 22px 18px; background-image: linear-gradient(105deg, rgba(7,37,77,.98), rgba(15,75,137,.9)); }
-  .welcome h1 { font-size: 27px; }
-  .welcome .primary { width: 100%; }
-  .stats { grid-template-columns: 1fr; }
-  .stat:nth-child(3) { grid-column: auto; }
-  .panel { padding: 16px; }
-  #appView header .user-chip { gap: 6px; }
-  #appView header .who { display: none; }
-}
-
 </style>
 <base target="_blank">
+
+<style id="reference-design-overrides">
+:root{--navy:#082b55;--navy2:#0d3d73;--navy3:#13539a;--gold:#d6ad62;--gold2:#f5e4b9;--surface:#f3f6fb;--ink:#14243b;--line:#dfe6ef;--shadow:0 8px 24px rgba(8,35,72,.08)}
+body{background:#eef2f7;color:var(--ink)}
+#appView{min-height:100vh;background:#f3f6fb}
+.app-shell{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:100vh}
+.app-sidebar{background:linear-gradient(180deg,#092b55 0%,#061f40 100%);color:#fff;display:flex;flex-direction:column;padding:18px 12px;gap:20px;position:sticky;top:0;height:100vh;overflow:auto;z-index:20;box-shadow:5px 0 18px rgba(5,28,58,.12)}
+.sidebar-brand{display:flex;align-items:center;gap:10px;padding:2px 8px 18px;border-bottom:1px solid rgba(255,255,255,.16)}
+.sidebar-brand img{width:54px;height:54px;object-fit:contain;background:#fff;border-radius:12px;padding:3px}
+.sidebar-brand strong{display:block;font-size:13px;line-height:1.25;color:white}.sidebar-brand small{display:block;font-size:10px;color:#c9d8ed;margin-top:5px}
+.sidebar-nav{display:grid;gap:5px}.sidebar-nav button{width:100%;border:0;background:transparent;color:#d5e2f2;text-align:left;padding:11px 12px;border-radius:9px;display:flex;align-items:center;gap:11px;font-size:12px;font-weight:650;transition:.18s;white-space:nowrap}.sidebar-nav button:hover{background:rgba(255,255,255,.09);color:white;transform:translateX(2px)}.sidebar-nav button.active{background:linear-gradient(100deg,#1d75d5,#1460b4);color:white;box-shadow:0 5px 14px rgba(0,0,0,.17)}.nav-icon{width:18px;text-align:center;font-size:16px}.sidebar-spacer{flex:1}.sidebar-bottom{border-top:1px solid rgba(255,255,255,.15);padding-top:12px}.sidebar-bottom button{color:#ffe0df}
+.app-workspace{min-width:0}.app-workspace>header{height:76px;background:#fff;border-bottom:1px solid #e1e7ef;display:flex;align-items:center;justify-content:space-between;padding:0 30px;gap:20px;position:sticky;top:0;z-index:15;box-shadow:0 2px 8px rgba(15,35,65,.035)}.app-workspace>header>div:first-child{display:flex;align-items:center;gap:13px}.header-logo{width:44px;height:44px;object-fit:contain;border-radius:10px}.app-workspace>header strong{font-size:19px;color:#102a4c;letter-spacing:-.4px}.app-workspace>header small{display:block;color:#687a91;font-size:11px;margin-top:3px}.app-workspace>header>div:last-child{display:flex;align-items:center;gap:14px}.user-chip{gap:8px}.user-chip .avatar{background:#e5effb;color:#114b87}.role-badge.admin{background:#e1edfb;color:#154b84}.app-workspace main{max-width:none;width:auto;margin:0;padding:26px 30px 36px}
+.welcome{min-height:220px;border:0;border-radius:14px;padding:30px 32px;background:linear-gradient(105deg,rgba(5,36,76,.96) 0%,rgba(15,65,121,.91) 48%,rgba(21,74,130,.45) 100%),url('/church-banner.jpg') center/cover,linear-gradient(120deg,#0b2f5b,#477cb4);color:white;position:relative;overflow:hidden;box-shadow:0 12px 26px rgba(8,38,78,.16)}.welcome:after{content:'✝';position:absolute;right:8%;bottom:-45px;font-size:190px;line-height:1;color:rgba(255,255,255,.12);pointer-events:none}.welcome h1{color:white;font-family:var(--font-body,Arial,sans-serif);font-size:34px;font-weight:800;letter-spacing:-.8px}.welcome .muted,.welcome .eyebrow{color:#e1eafa}.welcome .eyebrow{letter-spacing:1.4px}.welcome .primary{position:relative;z-index:1;background:#f1c977;color:#142b49;border:0;font-weight:800}.welcome .primary:hover{background:#ffdb91}
+.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}.stat{border:1px solid #e1e8f1;border-radius:12px;padding:19px 18px 18px 72px;box-shadow:0 4px 14px rgba(11,40,78,.045)}.stat-ic{left:17px;width:42px;height:42px;background:#e7f0fc;border:0;color:#1261ad;border-radius:12px}.stat:nth-child(2) .stat-ic{background:#fff1d8;color:#ad7724}.stat:nth-child(3) .stat-ic{background:#fce8f0;color:#c74e83}.stat strong{color:#123b70;font-size:28px}.panel{border:1px solid #e1e7ef;border-radius:12px;padding:22px;box-shadow:0 4px 14px rgba(11,40,78,.045);margin-bottom:18px}.panel h2{color:#132f55;font-size:19px}.panel-head{align-items:center}.panel-head h2{font-weight:800}.table-wrap{border-color:#e1e7ef;border-radius:10px}th{background:#f0f4f9;color:#526783}tbody tr:hover{background:#f6f9fd}.table-action{background:#e6effb;color:#124d8c}.table-action.cert{background:#fff0cf;color:#855d16}.primary{background:#1359a2}.primary:hover{background:#0c437e}.secondary{background:#edf2f8;color:#244464}.secondary:hover{background:#e0e9f5}.quiet{background:#f1f4f8;color:#344b68}.app-footer{padding:0 30px 18px;color:#8190a4;font-size:11px}
+.workspace-page{display:none}.workspace-page.active{display:block;animation:fadeUp .24s ease}.page-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}.page-heading h1{font-size:25px;color:#12345e;margin:0}.page-heading p{margin:5px 0 0;color:#6c7d92;font-size:13px}.feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.feature-card{background:#fff;border:1px solid #e1e7ef;border-radius:12px;padding:22px;box-shadow:0 4px 14px rgba(11,40,78,.04)}.feature-card h3{margin:0 0 8px;font-size:15px;color:#15375f}.feature-card p{font-size:12px;color:#6d7d91;line-height:1.6}.feature-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:11px;background:#e7f0fc;color:#12569a;font-size:20px;margin-bottom:13px}.report-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:15px 0}.report-stat{padding:18px;background:#fff;border:1px solid #e0e7f0;border-radius:11px}.report-stat small{display:block;color:#75859a;font-size:11px}.report-stat strong{display:block;font-size:25px;color:#123e75;margin-top:7px}.chart-bars{display:flex;align-items:end;gap:9px;height:200px;padding:18px 10px 0;border-bottom:1px solid #dfe6ef}.chart-col{height:100%;flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:8px;min-width:0}.chart-bar{width:min(30px,70%);background:linear-gradient(180deg,#3b8ee8,#1559a4);border-radius:5px 5px 0 0;min-height:3px;transition:height .3s}.chart-col small{font-size:10px;color:#75859a}.gender-track{height:13px;border-radius:99px;background:#f6d9e7;overflow:hidden;margin:12px 0}.gender-track span{display:block;height:100%;background:#2879cf;border-radius:99px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.inline-search{display:flex;gap:10px;flex-wrap:wrap}.inline-search input,.inline-search select{flex:1;min-width:170px}.verify-result{padding:18px;border-radius:10px;background:#f0f8f2;border:1px solid #cbe7d2;margin-top:15px;color:#235f35}.verify-result.invalid{background:#fff4f2;border-color:#f1d0ca;color:#9b3027}.upload-drop{border:2px dashed #b9cce1;background:#f7faff;border-radius:12px;padding:32px 18px;text-align:center}.upload-drop strong{display:block;color:#234c7b;margin:9px}.upload-drop p{font-size:12px;color:#77879b}.permission-note{background:#fff8e8;border:1px solid #f1dfb7;padding:12px 14px;border-radius:9px;color:#7c5c20;font-size:12px;line-height:1.55}.settings-row{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:15px 0;border-bottom:1px solid #e7edf4}.settings-row:last-child{border-bottom:0}.settings-row strong{display:block;font-size:13px}.settings-row small{display:block;color:#78889b;font-size:11px;margin-top:4px}
+@media(max-width:1000px){.app-shell{grid-template-columns:190px minmax(0,1fr)}.app-sidebar{padding:14px 9px}.app-workspace main{padding:20px}.app-workspace>header{padding:0 20px}.sidebar-brand strong{font-size:11px}.welcome{min-height:190px}}
+@media(max-width:720px){.app-shell{display:block}.app-sidebar{position:fixed;left:0;right:0;bottom:0;top:auto;height:auto;padding:7px 5px calc(7px + env(safe-area-inset-bottom));display:block;overflow:visible;border-radius:14px 14px 0 0}.sidebar-brand,.sidebar-spacer,.sidebar-bottom{display:none}.sidebar-nav{display:flex;overflow-x:auto;gap:3px;scrollbar-width:none}.sidebar-nav button{flex:0 0 auto;width:auto;min-width:66px;display:flex;flex-direction:column;gap:3px;text-align:center;padding:7px 9px;font-size:9px}.nav-icon{font-size:17px}.app-workspace>header{height:66px;padding:0 13px}.app-workspace>header strong{font-size:14px}.app-workspace>header small{font-size:10px}.header-logo{width:36px;height:36px}.user-chip .who,.user-chip .role-badge{display:none}#logout{font-size:11px;padding:7px 9px}.app-workspace main{padding:14px 12px 90px}.welcome{padding:23px 19px;min-height:190px}.welcome h1{font-size:27px}.welcome:after{font-size:130px;right:2%}.stats{grid-template-columns:1fr;gap:10px}.stat{padding:15px 15px 15px 68px}.stat strong{font-size:23px}.panel{padding:15px}.panel-head{align-items:stretch}.search-wrap{min-width:0;max-width:none}.feature-grid,.form-row{grid-template-columns:1fr}.report-stats{grid-template-columns:1fr 1fr}.page-heading{align-items:flex-start;flex-direction:column}.app-footer{padding:0 12px 80px}}
+@media print{.app-sidebar,.app-workspace>header{display:none!important}.app-shell{display:block}.app-workspace main{padding:0;margin:0}.workspace-page{display:none!important}#certificateDialog[open]{display:block}}
+</style>
+
 </head>
 <body>
 
@@ -2223,25 +2133,7 @@ table tbody tr:hover { background: #f6faff; }
 <!-- ==================== DASHBOARD ==================== -->
 <div id="appView" hidden>
 
-    <aside class="app-sidebar" aria-label="Main navigation">
-        <div class="sidebar-brand">
-            <img src="/logo.png" alt="Church logo">
-            <div><strong>St. Mary Parish</strong><small>Baptism Records</small></div>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="#dashboardTop" class="sidebar-link active" data-nav="dashboardTop"><span>⌂</span> Dashboard</a>
-            <a href="#registryPanel" class="sidebar-link" data-nav="registryPanel"><span>▤</span> Baptism Records</a>
-            <button type="button" class="sidebar-link" id="sidebarNewRecord"><span>＋</span> New Registration</button>
-            <a href="#registryPanel" class="sidebar-link" data-nav="registryPanel"><span>⌕</span> Search Records</a>
-            <a href="#aiPanel" class="sidebar-link" data-nav="aiPanel"><span>▥</span> AI Insights</a>
-        </nav>
-        <div class="sidebar-bottom">
-            <div class="sidebar-secure"><span>●</span><div><b>Secure Registry</b><small>Server-connected records</small></div></div>
-            <button type="button" class="sidebar-link" id="sidebarLogout"><span>⇥</span> Sign out</button>
-        </div>
-    </aside>
-
-    <header id="dashboardTop">
+    <header>
         <div>
             <img class="header-logo" src="/logo.png" alt="AI-Based Baptist Church Record System logo">
             <div>
@@ -2296,7 +2188,7 @@ table tbody tr:hover { background: #f6faff; }
         <strong id="latest">—</strong>
     </div>
 </div>
-        <section class="panel" id="registryPanel">
+        <section class="panel">
             <div class="panel-head">
                 <div>
                     <h2>Registry</h2>
@@ -2331,7 +2223,7 @@ table tbody tr:hover { background: #f6faff; }
             </p>
         </section>
 
-        <section class="panel ai-panel" id="aiPanel">
+        <section class="panel ai-panel">
             <div>
                 <p class="eyebrow">AI-ASSISTED INSIGHTS</p>
                 <h2>Registry overview</h2>
@@ -2362,9 +2254,15 @@ table tbody tr:hover { background: #f6faff; }
             <label>First name *<input name="firstName" type="text" required maxlength="120"></label>
             <label>Last name *<input name="lastName" type="text" required maxlength="120"></label>
             <label>Date of birth<input name="birthDate" type="date"></label>
+            <label>Place of birth<input name="placeOfBirth" type="text" maxlength="180" placeholder="City / municipality"></label>
+            <label>Gender<select name="gender"><option value="">Select gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select></label>
             <label>Baptism date *<input name="baptismDate" type="date" required></label>
-            <label>Parents / guardian<input name="parents" type="text" maxlength="220"></label>
-            <label>Minister<input name="minister" type="text" maxlength="120"></label>
+            <label>Father's name<input name="fatherName" type="text" maxlength="120"></label>
+            <label>Mother's name<input name="motherName" type="text" maxlength="120"></label>
+            <label>Godfather's name<input name="godfatherName" type="text" maxlength="120"></label>
+            <label>Godmother's name<input name="godmotherName" type="text" maxlength="120"></label>
+            <label>Parents / guardian<input name="parents" type="text" maxlength="220" placeholder="Combined parents / guardian (optional)"></label>
+            <label>Priest's name<input name="minister" type="text" maxlength="120"></label>
             <label>Church / parish<input name="church" type="text" maxlength="120"></label>
             <label>Certificate number<input name="certificateNo" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Example: 2026001" maxlength="80"></label>
             <label class="wide">Notes
@@ -2616,24 +2514,6 @@ function applyRoleUI() {
         new Date().toLocaleDateString("en-PH", { weekday: "long", year: "numeric", month: "long", day: "numeric" }) +
         " — manage and securely find baptism records.";
 }
-
-/* Sidebar navigation: uses existing dashboard sections and existing record/logout handlers. */
-const sidebarNewRecord = document.getElementById("sidebarNewRecord");
-if (sidebarNewRecord) sidebarNewRecord.addEventListener("click", () => {
-    const newRecordButton = document.getElementById("newRecord");
-    if (newRecordButton && !newRecordButton.hidden) newRecordButton.click();
-    else toast("info", "Read-only access", "Your account cannot create or edit records.");
-});
-const sidebarLogout = document.getElementById("sidebarLogout");
-if (sidebarLogout) sidebarLogout.addEventListener("click", () => document.getElementById("logout")?.click());
-document.querySelectorAll(".sidebar-link[data-nav]").forEach((link) => {
-    link.addEventListener("click", () => {
-        document.querySelectorAll(".sidebar-link[data-nav]").forEach((item) => item.classList.remove("active"));
-        link.classList.add("active");
-        const target = document.getElementById(link.dataset.nav);
-        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-});
 
 /* =========================================================
    AUTH TABS / PASSWORD TOGGLES / STRENGTH METER
@@ -2995,7 +2875,7 @@ function editRecord(id) {
     const record = recordsCache.find((r) => String(r._id) === String(id));
     if (!record) { toast("error", "Record not found", "Please refresh the registry."); return; }
     recordForm.reset();
-    ["firstName","lastName","birthDate","baptismDate","parents","minister","church","certificateNo","notes"]
+    ["firstName","lastName","birthDate","placeOfBirth","gender","fatherName","motherName","godfatherName","godmotherName","baptismDate","parents","minister","church","certificateNo","notes"]
         .forEach((f) => { if (recordForm.elements[f]) recordForm.elements[f].value = record[f] || ""; });
     recordForm.elements.id.value = id;
     $("#notesCount").textContent = (record.notes || "").length + " / 1000";
@@ -3271,7 +3151,10 @@ $("#printCertificate").addEventListener("click", () => {
         <script>
             window.onload = function () { window.focus(); window.print(); };
         <\/script>
-        </body></html>`);
+        
+
+
+</body></html>`);
     printWindow.document.close();
     toast("info", "Certificate sent to printer", "Choose “Save as PDF” in the print dialog to keep a digital copy.");
 });
@@ -3316,5 +3199,92 @@ showLogin();
 console.log("Baptism Church Record System — backend-only edition — loaded.");
 </script>
 
+<script id="reference-layout-controller">
+(() => {
+  const app = document.getElementById('appView');
+  if (!app) return;
+  const header = app.querySelector(':scope > header');
+  const main = app.querySelector(':scope > main');
+  const footer = app.querySelector(':scope > .app-footer');
+  if (!header || !main || !footer) return;
+
+  const welcome = main.querySelector('.welcome');
+  const stats = main.querySelector('.stats');
+  const registryPanel = main.querySelector('.panel:not(.ai-panel)');
+  const aiPanel = main.querySelector('.ai-panel');
+  const workspace = document.createElement('div'); workspace.className = 'app-shell';
+  const sidebar = document.createElement('aside'); sidebar.className = 'app-sidebar'; sidebar.setAttribute('aria-label','Main navigation');
+  sidebar.innerHTML = `
+    <div class="sidebar-brand"><img src="/logo.png" alt="Church logo"><div><strong>BAPTISMAL RECORDS</strong><small>St. Mary Parish Church</small></div></div>
+    <nav class="sidebar-nav" aria-label="System modules">
+      <button type="button" data-page="dashboard" class="active"><span class="nav-icon">⌂</span>Dashboard</button>
+      <button type="button" data-page="records"><span class="nav-icon">▤</span>Baptismal Records</button>
+      <button type="button" data-action="new-record"><span class="nav-icon">＋</span>New Registration</button>
+      <button type="button" data-page="upload"><span class="nav-icon">⇧</span>Certificate Upload</button>
+      <button type="button" data-action="generate"><span class="nav-icon">▧</span>Generate Certificate</button>
+      <button type="button" data-page="search"><span class="nav-icon">⌕</span>Search Records</button>
+      <button type="button" data-page="reports"><span class="nav-icon">▥</span>Reports & Statistics</button>
+      <button type="button" data-page="verify"><span class="nav-icon">✓</span>Certificate Verification</button>
+      <button type="button" data-page="users"><span class="nav-icon">♙</span>User Management</button>
+      <button type="button" data-page="settings"><span class="nav-icon">⚙</span>Settings</button>
+    </nav><div class="sidebar-spacer"></div><div class="sidebar-bottom"><button type="button" data-action="logout"><span class="nav-icon">⇥</span>Logout</button></div>`;
+  const content = document.createElement('div'); content.className = 'app-workspace';
+  app.insertBefore(workspace, header); workspace.append(sidebar, content); content.append(header, main, footer);
+
+  // The existing registry and add/edit/certificate flows remain the source of truth.
+  const dashboard = document.createElement('section'); dashboard.className='workspace-page active'; dashboard.dataset.pageContent='dashboard';
+  const recent = document.createElement('section'); recent.className='panel'; recent.innerHTML=`<div class="panel-head"><div><h2>Recent Baptism Records</h2><p class="muted">Latest entries from the connected church registry.</p></div><button type="button" class="secondary" data-go="records">View all records →</button></div><div class="table-wrap"><table><thead><tr><th>Child's name</th><th>Date of baptism</th><th>Parents / guardian</th><th>Church</th></tr></thead><tbody id="recentRows"></tbody></table></div><p id="recentEmpty" class="empty" hidden>No baptism records are available yet.</p>`;
+  dashboard.append(welcome, stats, recent, aiPanel);
+
+  const recordsPage=document.createElement('section');recordsPage.className='workspace-page';recordsPage.dataset.pageContent='records';recordsPage.append(registryPanel);
+  const searchPage=document.createElement('section');searchPage.className='workspace-page';searchPage.dataset.pageContent='search';
+  searchPage.innerHTML=`<div class="page-heading"><div><h1>Search and Filter</h1><p>Find records using a child's name, parents, minister, or church.</p></div></div>`;
+  const searchPanel=registryPanel.cloneNode(true); searchPanel.querySelector('h2').textContent='Search Baptism Records'; searchPanel.querySelector('.muted').textContent='Search the connected registry and use the actions on each record.';
+  // Avoid duplicate IDs/listeners by redirecting this page's search field to the original registry page.
+  searchPage.innerHTML+=`<div class="feature-card"><div class="feature-icon">⌕</div><h3>Registry search</h3><p>Use the live search field in Baptismal Records. Search filters query the server, so results come from the connected database.</p><button class="primary" type="button" data-go="records">Open search records</button></div>`;
+
+  const reports=document.createElement('section');reports.className='workspace-page';reports.dataset.pageContent='reports';reports.innerHTML=`<div class="page-heading"><div><h1>Reports and Statistics</h1><p>Live summaries calculated from the records currently returned by the database.</p></div><button type="button" class="secondary" id="refreshReport">↻ Refresh report</button></div><div id="reportStats" class="report-stats"></div><div class="feature-grid"><div class="feature-card"><h3>Monthly Baptism Records</h3><p>Distribution by baptism month for the current year.</p><div class="chart-bars" id="monthChart"></div></div><div class="feature-card"><h3>Gender Distribution</h3><p>Based on the gender field saved with each baptism record, when available.</p><div id="genderReport"></div></div></div><div class="feature-card" style="margin-top:18px"><h3>Export report</h3><p>Download a CSV summary of the records currently loaded. The export contains registry details, so store it securely.</p><button type="button" class="primary" id="exportReport">⇩ Export CSV</button></div>`;
+
+  const verify=document.createElement('section');verify.className='workspace-page';verify.dataset.pageContent='verify';verify.innerHTML=`<div class="page-heading"><div><h1>Certificate Verification</h1><p>Check a certificate number against baptism records in the connected registry.</p></div></div><div class="feature-card"><div class="feature-icon">✓</div><h3>Verify a certificate</h3><form id="verifyForm"><label>Certificate number<input id="verifyNumber" required placeholder="Enter certificate number" autocomplete="off"></label><button class="primary" type="submit" style="margin-top:12px">⌕ Verify certificate</button></form><div id="verifyResult" aria-live="polite"></div></div>`;
+
+  const upload=document.createElement('section');upload.className='workspace-page';upload.dataset.pageContent='upload';upload.innerHTML=`<div class="page-heading"><div><h1>Baptismal Certificate Upload</h1><p>Select a scanned certificate to inspect it before uploading.</p></div></div><div class="feature-card"><div class="upload-drop"><div style="font-size:36px;color:#4289d2">☁</div><strong>Drag and drop your file here</strong><p>or choose a file from your computer</p><label class="primary" style="display:inline-block;padding:10px 16px;border-radius:8px;cursor:pointer">Choose file<input id="certificateFile" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" hidden></label><p>Supported: PDF, PNG, JPG, WEBP · up to 10 MB</p></div><div id="uploadPreview" style="margin-top:15px"></div><p class="permission-note">Upload storage is not connected to the current backend yet. This page can preview the selected file, but it will not save or publish it to the database. Do not treat a selected file as an archived certificate.</p></div>`;
+
+  const users=document.createElement('section');users.className='workspace-page';users.dataset.pageContent='users';users.innerHTML=`<div class="page-heading"><div><h1>User Account Management</h1><p>Account access and permissions.</p></div></div><div class="feature-card"><div class="feature-icon">♙</div><h3>Current account</h3><div id="accountSummary"></div><p class="permission-note">The existing backend supports account registration and sign-in, but does not currently expose administrator endpoints for listing, editing, or deleting user accounts. This screen will not pretend to manage users until those secured endpoints are implemented.</p></div>`;
+
+  const settings=document.createElement('section');settings.className='workspace-page';settings.dataset.pageContent='settings';settings.innerHTML=`<div class="page-heading"><div><h1>Settings</h1><p>System and data connection information.</p></div></div><div class="feature-card"><div class="feature-icon">⚙</div><h3>System information</h3><div class="settings-row"><div><strong>Application</strong><small>AI-Based Baptism Church Record System</small></div><span class="role-badge admin">Active</span></div><div class="settings-row"><div><strong>Record storage</strong><small>Records are requested from the server API.</small></div><span class="role-badge viewer">Server API</span></div><div class="settings-row"><div><strong>Session</strong><small id="settingsUser">Checking signed-in account…</small></div></div><p class="permission-note">Database backup/restore and church profile editing are not provided by the current backend. They must be implemented server-side before these controls can safely modify production data.</p></div>`;
+
+  // Move original content into page containers, then add all feature pages.
+  main.replaceChildren(dashboard, recordsPage, searchPage, upload, reports, verify, users, settings);
+  const pages=[...main.querySelectorAll('[data-page-content]')];
+  function go(page){
+    pages.forEach(el=>el.classList.toggle('active',el.dataset.pageContent===page));
+    sidebar.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+    if(page==='reports') renderReport();
+    if(page==='users') renderAccount();
+    if(page==='settings') renderAccount(true);
+    if(page==='verify') {const r=document.getElementById('verifyResult'); if(r) r.innerHTML='';}
+    if(page==='records') setTimeout(()=>document.getElementById('search')?.focus({preventScroll:true}),60);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  sidebar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.page){go(b.dataset.page);return;}if(b.dataset.action==='new-record')document.getElementById('newRecord')?.click();if(b.dataset.action==='generate'){go('records');setTimeout(()=>{const first=document.querySelector('#rows .table-action.cert');if(first)first.click();else toast('info','No record selected','Add or select a baptism record to generate its certificate.');},100);}if(b.dataset.action==='logout')document.getElementById('logout')?.click();});
+  main.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go);});
+
+  function fmtDate(v){if(!v)return '—';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});}
+  function safe(v){return String(v??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function renderRecent(){const target=document.getElementById('recentRows'),empty=document.getElementById('recentEmpty');if(!target)return;const rs=Array.isArray(window.recordsCache)?window.recordsCache:(typeof recordsCache!=='undefined'?recordsCache:[]);const sorted=[...rs].sort((a,b)=>String(b.baptismDate||'').localeCompare(String(a.baptismDate||''))).slice(0,5);target.innerHTML=sorted.map(r=>`<tr><td><strong>${safe([r.firstName,r.lastName].filter(Boolean).join(' '))}</strong></td><td>${safe(fmtDate(r.baptismDate))}</td><td>${safe(r.parents||'—')}</td><td>${safe(r.church||'—')}</td></tr>`).join('');empty.hidden=sorted.length>0;}
+  function renderReport(){const rs=typeof recordsCache!=='undefined'?recordsCache:[];const year=new Date().getFullYear();const current=rs.filter(r=>String(r.baptismDate||'').startsWith(String(year)));const total=rs.length;const monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];const counts=Array(12).fill(0);current.forEach(r=>{const m=Number(String(r.baptismDate||'').slice(5,7));if(m>=1&&m<=12)counts[m-1]++;});const max=Math.max(1,...counts);const stats=document.getElementById('reportStats');if(stats)stats.innerHTML=`<div class="report-stat"><small>Total baptism records</small><strong>${total}</strong></div><div class="report-stat"><small>Baptisms in ${year}</small><strong>${current.length}</strong></div><div class="report-stat"><small>Most recent baptism</small><strong style="font-size:17px">${safe(fmtDate([...rs].sort((a,b)=>String(b.baptismDate||'').localeCompare(String(a.baptismDate||'')))[0]?.baptismDate))}</strong></div>`;const chart=document.getElementById('monthChart');if(chart)chart.innerHTML=counts.map((n,i)=>`<div class="chart-col" title="${monthNames[i]}: ${n}"><div class="chart-bar" style="height:${Math.max(2,n/max*145)}px"></div><small>${monthNames[i]}</small></div>`).join('');const gender=document.getElementById('genderReport');if(gender){const male=rs.filter(r=>/^(male|m)$/i.test(r.gender||'')).length;const female=rs.filter(r=>/^(female|f)$/i.test(r.gender||'')).length;const known=male+female;gender.innerHTML=`<div style="display:flex;justify-content:space-between;font-size:12px"><strong>Male</strong><span>${male}</span></div><div class="gender-track"><span style="width:${known?male/known*100:0}%"></span></div><div style="display:flex;justify-content:space-between;font-size:12px"><strong>Female</strong><span>${female}</span></div><div class="gender-track"><span style="width:${known?female/known*100:0}%;background:#d95d94"></span></div><small style="color:#78889b">${rs.length-known} record(s) without a recognized gender value.</small>`;}}
+  function renderAccount(settingsOnly=false){const name=document.getElementById('userName')?.textContent||'Signed-in user';const role=document.getElementById('userRoleText')?.textContent||'Role not available';const email=(typeof currentUser!=='undefined'&&currentUser?.email)||'Email not exposed by current session response';const target=document.getElementById('accountSummary');if(target)target.innerHTML=`<div class="settings-row"><div><strong>${safe(name)}</strong><small>${safe(email)}</small></div><span class="role-badge admin">${safe(role)}</span></div>`;const setting=document.getElementById('settingsUser');if(setting)setting.textContent=`Signed in as ${name} · ${role}`;}
+  document.getElementById('refreshReport')?.addEventListener('click',()=>{renderReport();toast('success','Report refreshed','Updated using the latest records currently loaded.');});
+  document.getElementById('exportReport')?.addEventListener('click',()=>{const rs=typeof recordsCache!=='undefined'?recordsCache:[];if(!rs.length){toast('info','No records to export','There are no loaded baptism records.');return;}const cols=['firstName','lastName','birthDate','baptismDate','parents','minister','church','certificateNo','notes'];const csv=[cols.join(','),...rs.map(r=>cols.map(k=>'"'+String(r[k]??'').replace(/"/g,'""')+'"').join(','))].join('\r\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='baptism-records-report.csv';a.click();URL.revokeObjectURL(url);});
+  document.getElementById('verifyForm')?.addEventListener('submit',e=>{e.preventDefault();const val=document.getElementById('verifyNumber').value.trim().toLowerCase();const rs=typeof recordsCache!=='undefined'?recordsCache:[];const found=rs.find(r=>String(r.certificateNo||'').trim().toLowerCase()===val);const box=document.getElementById('verifyResult');if(!found){box.innerHTML='<div class="verify-result invalid"><strong>Certificate not found in the loaded registry.</strong><p>Check the certificate number or refresh the records list.</p></div>';return;}box.innerHTML=`<div class="verify-result"><strong>✓ Record found in registry</strong><p><b>Name:</b> ${safe([found.firstName,found.lastName].filter(Boolean).join(' '))}</p><p><b>Date of baptism:</b> ${safe(fmtDate(found.baptismDate))}</p><p><b>Certificate No.:</b> ${safe(found.certificateNo)}</p><p>This confirms a matching record exists in the current registry; it is not a cryptographic authenticity check.</p></div>`;});
+  document.getElementById('certificateFile')?.addEventListener('change',e=>{const f=e.target.files?.[0],box=document.getElementById('uploadPreview');if(!f||!box)return;if(f.size>10*1024*1024){box.innerHTML='<p class="error">File exceeds the 10 MB preview limit.</p>';e.target.value='';return;}box.innerHTML=`<div class="settings-row"><div><strong>${safe(f.name)}</strong><small>${safe(f.type||'Unknown type')} · ${(f.size/1024).toFixed(1)} KB</small></div><span class="role-badge viewer">Selected</span></div>`;if(f.type.startsWith('image/')){const url=URL.createObjectURL(f);box.innerHTML+=`<img src="${url}" alt="Selected certificate preview" style="max-width:100%;max-height:340px;object-fit:contain;margin-top:12px;border:1px solid #e0e7f0;border-radius:8px">`;}else if(f.type==='application/pdf')box.innerHTML+='<p class="muted">PDF selected. Preview depends on your browser PDF viewer.</p>';});
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b&&b.closest('.app-shell'))go(b.dataset.go);});
+  const originalRender=window.renderRecords;
+  // The existing renderer is a top-level function declaration; observe updates without replacing its API.
+  const refreshObserver=new MutationObserver(()=>renderRecent());const tbody=document.getElementById('rows');if(tbody)refreshObserver.observe(tbody,{childList:true,subtree:true});
+  document.getElementById('logout')?.addEventListener('click',()=>{});
+  renderRecent();
+})();
+</script>
 </body>
 </html>
