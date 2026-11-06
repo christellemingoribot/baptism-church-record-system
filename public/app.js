@@ -819,10 +819,12 @@ $("#printCertificate").addEventListener("click", () => {
             width: 297mm;
             min-height: 210mm;
             font-family: Georgia, "Times New Roman", serif;
-            color: #38291f;
+            color: #142b48;
         }
 
         #certificateDesign {
+            isolation: isolate;
+            position: relative;
             width: 297mm;
             height: 210mm;
             padding: 9mm;
@@ -833,10 +835,25 @@ $("#printCertificate").addEventListener("click", () => {
             overflow: hidden;
         }
 
+        #certificateDesign::before {
+            content: "";
+            position: absolute;
+            inset: 8mm;
+            z-index: 0;
+            pointer-events: none;
+            background-image: url("/religious-watermark.png");
+            background-size: cover;
+            background-position: center 42%;
+            background-repeat: no-repeat;
+            opacity: .13;
+        }
+
         .certificate-border {
+            position: relative;
+            z-index: 1;
             width: 100%;
             height: 100%;
-            border: 3px double #a84430;
+            border: 3px double #174b83;
             outline: 1px solid #d6b36a;
             outline-offset: -7mm;
             text-align: center;
@@ -870,13 +887,13 @@ $("#printCertificate").addEventListener("click", () => {
 
         #certificateDesign h1 {
             font-size: 30pt;
-            color: #8e3829;
+            color: #123f75;
             margin: 0 0 3mm;
         }
 
         #certificateDesign h2 {
             font-size: 22pt;
-            color: #8e3829;
+            color: #123f75;
             margin: 2mm 0;
         }
 

@@ -1,7 +1,7 @@
 
 /* ==========================================
    CHURCH RECORD SYSTEM
-   PREMIUM BURGUNDY & GOLD UI THEME
+   PREMIUM NAVY & GOLD UI THEME
 ========================================== */
 
 :root {
@@ -10,12 +10,12 @@
     --line: #e9e3dc;
     --bg: #f8f6f2;
 
-    --brand: #87352f;
-    --brand2: #64251f;
-    --brand-light: #f5e8e3;
+    --brand: #124d91;
+    --brand2: #082e5d;
+    --brand-light: #e8f1ff;
 
-    --gold: #c69b52;
-    --gold-light: #f8f0df;
+    --gold: #d2a34f;
+    --gold-light: #fff5d9;
 
     --success: #16845b;
     --danger: #b42318;

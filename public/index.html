@@ -11,7 +11,7 @@
 
 <style>
 /* =========================================================
-   CHURCH RECORD SYSTEM — PREMIUM BURGUNDY & GOLD
+   CHURCH RECORD SYSTEM — PREMIUM NAVY & GOLD
    Enhanced edition: animations, micro-interactions,
    skeleton loading, toasts, backend integration, live certificate
 ========================================================= */
@@ -24,13 +24,13 @@
     --line: #e9e3dc;
     --bg: #f8f6f2;
 
-    --brand: #87352f;
-    --brand2: #64251f;
-    --brand-light: #f5e8e3;
+    --brand: #124d91;
+    --brand2: #082e5d;
+    --brand-light: #e8f1ff;
 
-    --gold: #c69b52;
-    --gold2: #a97f37;
-    --gold-light: #f8f0df;
+    --gold: #d2a34f;
+    --gold2: #a97825;
+    --gold-light: #fff5d9;
 
     --success: #16845b;
     --danger: #b42318;
@@ -77,7 +77,7 @@ button:active { transform: scale(.97); }
 button:disabled { opacity: .6; cursor: not-allowed; }
 
 button:focus-visible, input:focus-visible, a:focus-visible, textarea:focus-visible {
-    outline: 3px solid rgba(198, 155, 82, .35);
+    outline: 3px solid rgba(28, 105, 190, .30);
     outline-offset: 3px;
 }
 
@@ -203,7 +203,7 @@ a { transition: color .2s ease; }
 }
 
 @keyframes pulseGold {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(198, 155, 82, .35); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(28, 105, 190, .30); }
     50% { box-shadow: 0 0 0 8px rgba(198, 155, 82, 0); }
 }
 
@@ -343,7 +343,7 @@ small { color: var(--muted); }
     color: white;
     background:
         radial-gradient(circle at 85% 12%, rgba(255, 210, 150, .25), transparent 30%),
-        linear-gradient(145deg, #64251f, #87352f 55%, #b47745);
+        linear-gradient(145deg, #06264f, #0b4c91 55%, #1e69b6);
     background-size: 100% 100%, 220% 220%;
     animation: gradientPan 16s ease infinite;
 }
@@ -396,7 +396,7 @@ small { color: var(--muted); }
 }
 
 .auth-brand .mark {
-    background: rgba(255,255,255,.15);
+    background: rgba(255,255,255,.12);
     color: #f8dca7;
     border: 1px solid rgba(255,255,255,.2);
 }
@@ -974,8 +974,8 @@ dialog::backdrop {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
     padding: 14px;
-    background: #faf7f1;
-    border: 1px dashed #e3d6c2;
+    background: #f3f7fd;
+    border: 1px dashed #b9cde6;
     border-radius: 14px;
 }
 
@@ -1005,6 +1005,7 @@ dialog::backdrop {
 }
 
 .certificate-design {
+    isolation: isolate;
     width: 760px;
     height: 540px;
     padding: 12px;
@@ -1020,10 +1021,11 @@ dialog::backdrop {
 }
 
 .certificate-border {
+    z-index: 1;
     width: 100%; 
     height: 100%;
-    border: 3px double #a84430;
-    outline: 1px solid #d6b36a;
+    border: 3px double #174b83;
+    outline: 1px solid #d2a34f;
     outline-offset: -18px;
     text-align: center;
     padding: 20px 40px 14px 40px;
@@ -1032,7 +1034,23 @@ dialog::backdrop {
     align-items: center;
     justify-content: space-between;
     position: relative;
-    background: rgba(255, 253, 247, .75);
+    background: rgba(255, 253, 247, .82);
+}
+
+/* Soft devotional watermark: artwork stays behind certificate text */
+.certificate-design::before {
+    content: "";
+    position: absolute;
+    inset: 18px 24px;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("/religious-watermark.png");
+    background-size: cover;
+    background-position: center 42%;
+    background-repeat: no-repeat;
+    opacity: .13;
+    filter: saturate(.78);
+    border-radius: 8px;
 }
 
 /* corner ornaments */
@@ -1057,15 +1075,15 @@ dialog::backdrop {
     text-transform: uppercase;
     margin: 0 0 2px;
     font-weight: 700;
-    color: #59352c;
+    color: #102f56;
 }
 
-.certificate-kicker { font-size: 9.5pt; letter-spacing: 4px; margin: 0 0 2px; color: #7d6a57; }
+.certificate-kicker { font-size: 9.5pt; letter-spacing: 4px; margin: 0 0 2px; color: #5d7189; }
 
 .certificate-design h1 {
     font-family: var(--font-display);
     font-size: 30pt;
-    color: #8e3829;
+    color: #123f75;
     margin: 0 0 2px;
     letter-spacing: 6px;
 }
@@ -1073,7 +1091,7 @@ dialog::backdrop {
 .certificate-design h2 {
     font-family: var(--font-display);
     font-size: 20pt;
-    color: #8e3829;
+    color: #123f75;
     margin: 2px 0 4px;
 }
 
@@ -1086,8 +1104,8 @@ dialog::backdrop {
         radial-gradient(circle, var(--gold) 1.5px, transparent 2px) center/14px 6px repeat-x;
 }
 
-.certificate-body { font-size: 11pt; margin: 2px 0; color: #4c4038; font-family: Georgia, serif; }
-.certificate-body strong { color: #38291f; }
+.certificate-body { font-size: 11pt; margin: 2px 0; color: #24364d; font-family: Georgia, serif; }
+.certificate-body strong { color: #142b48; }
 
 /* seal */
 .seal {
@@ -1306,7 +1324,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-    outline: 3px solid rgba(198, 155, 82, .35);
+    outline: 3px solid rgba(28, 105, 190, .30);
     outline-offset: 3px;
 }
 
@@ -2042,6 +2060,22 @@ header small {
     .stats .stat-ic .stat-img-icon { animation: none !important; }
 }
 
+
+/* Visual consistency and micro-interactions */
+.auth-aside { background-image: radial-gradient(circle at 78% 16%, rgba(240,199,112,.20), transparent 28%), linear-gradient(145deg,#061d3d 0%,#0a3e78 54%,#1767ac 100%); }
+.auth-brand .mark { color:#f4d58c; }
+.auth-tabs { border-color:#dce6f3; }
+.auth-tabs .active, .auth-tabs [aria-selected="true"] { color:#0c4f96; }
+button.primary, .primary { background:linear-gradient(135deg,#155ca6,#0a3972); color:#fff; box-shadow:0 7px 16px rgba(10,57,114,.18); }
+button.primary:hover, .primary:hover { filter:brightness(1.07); transform:translateY(-1px); }
+.nav-icon { color:#f0c96e; }
+.app-sidebar .sidebar-brand small { color:#d7e6fa; }
+.certificate-design { background-image: radial-gradient(circle at 50% 40%, rgba(255,255,255,.96), rgba(255,253,247,.94)); border-radius:3px; }
+.certificate-border { border-color:#174b83; }
+.certificate-church, .certificate-design h1, .certificate-design h2 { text-shadow:0 1px 0 rgba(255,255,255,.7); }
+.seal { background:radial-gradient(circle,#d9b55f,#a87925); border-color:#f4df9e; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; scroll-behavior:auto !important; } }
+
 </style>
 <base target="_blank">
 
@@ -2074,14 +2108,14 @@ body{background:#eef2f7;color:var(--ink)}
         <span class="spark s2">✧</span>
         <span class="spark s3">✦</span>
         <span class="spark s4">✧</span>
-        <div class="auth-brand"><img class="brand-logo" src="/logo.png" alt="AI-Based Baptist Church Record System logo"><span>AI-BASED BAPTIST CHURCH RECORD SYSTEM</span></div>
+        <div class="auth-brand"><img class="brand-logo" src="/logo.png" alt="AI-Based Baptist Church Record System logo"><span>BAPTISMAL RECORDS MANAGEMENT</span></div>
         <div class="auth-message">
             <p class="eyebrow">BAPTISM RECORD MANAGEMENT</p>
-            <h1>Every milestone,<br><em>carefully recorded.</em></h1>
-            <p>A simple and secure space to access the church baptism registry — searchable, printable certificates and AI-assisted insights.</p>
+            <h1>Faith, hope,<br><em>carefully preserved.</em></h1>
+            <p>A secure space for baptism records, printable certificates, and thoughtful record management.</p>
             <div class="auth-decoration"><span>✦</span><span>✧</span><span>✦</span></div>
         </div>
-        <small class="auth-aside-foot">A secure church record keeping system</small>
+        <small class="auth-aside-foot">Faith • Record • Preserve</small>
     </div>
     <div class="auth-main">
         <div class="login-card auth-card">
@@ -3110,11 +3144,11 @@ $("#printCertificate").addEventListener("click", () => {
         @page { size: A4 landscape; margin: 0; }
         * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         html, body { margin: 0; padding: 0; width: 297mm; height: 210mm; overflow: hidden;
-            font-family: Georgia, "Times New Roman", serif; color: #38291f; }
+            font-family: Georgia, "Times New Roman", serif; color: #142b48; }
         #certificateDesign { transform: none !important; width: 297mm; height: 210mm; padding: 9mm;
             background-color: #fffdf7; background-size: 100% 100%; background-position: center;
             background-repeat: no-repeat; box-shadow: none !important; overflow: hidden; }
-        .certificate-border { width: 100%; height: 100%; border: 3px double #a84430; outline: 1px solid #d6b36a;
+        .certificate-border { width: 100%; height: 100%; border: 3px double #174b83; outline: 1px solid #d2a34f;
             outline-offset: -7mm; text-align: center; padding: 10mm 18mm; display: flex; flex-direction: column;
             align-items: center; justify-content: center; position: relative; background: rgba(255,253,247,.55); }
         .corner { position: absolute; width: 46px; height: 46px; border-color: #c69b52; border-style: solid; border-width: 0; }
@@ -3125,8 +3159,8 @@ $("#printCertificate").addEventListener("click", () => {
         .certificate-logo { max-width: 22mm; max-height: 22mm; object-fit: contain; margin-bottom: 3mm; }
         .certificate-church { font-size: 15pt; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 5mm; font-weight: bold; }
         .certificate-kicker { font-size: 11pt; letter-spacing: 3px; margin: 0 0 2mm; }
-        #certificateDesign h1 { font-size: 30pt; color: #8e3829; margin: 0 0 3mm; letter-spacing: 6px; }
-        #certificateDesign h2 { font-size: 22pt; color: #8e3829; margin: 2mm 0; }
+        #certificateDesign h1 { font-size: 30pt; color: #123f75; margin: 0 0 3mm; letter-spacing: 6px; }
+        #certificateDesign h2 { font-size: 22pt; color: #123f75; margin: 2mm 0; }
         .certificate-rule { width: 65%; height: 8px; margin: 0 0 3mm;
             background: linear-gradient(90deg, transparent, #c69b52, transparent) center/100% 1px no-repeat,
                 radial-gradient(circle, #c69b52 1.5px, transparent 2px) center/16px 8px repeat-x; }
@@ -3215,7 +3249,7 @@ console.log("Baptism Church Record System — backend-only edition — loaded.")
   const workspace = document.createElement('div'); workspace.className = 'app-shell';
   const sidebar = document.createElement('aside'); sidebar.className = 'app-sidebar'; sidebar.setAttribute('aria-label','Main navigation');
   sidebar.innerHTML = `
-    <div class="sidebar-brand"><img src="/logo.png" alt="Church logo"><div><strong>BAPTISMAL RECORDS</strong><small>St. Mary Parish Church</small></div></div>
+    <div class="sidebar-brand"><img src="/logo.png" alt="Church logo"><div><strong>BAPTISMAL RECORDS</strong><small>Faith • Record • Preserve</small></div></div>
     <nav class="sidebar-nav" aria-label="System modules">
       <button type="button" data-page="dashboard" class="active"><span class="nav-icon">⌂</span>Dashboard</button>
       <button type="button" data-page="records"><span class="nav-icon">▤</span>Baptismal Records</button>
