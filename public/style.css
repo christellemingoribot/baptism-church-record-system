@@ -1362,3 +1362,98 @@ input, select, textarea { min-height: 44px; }
 .logout-settings-btn:hover { filter:brightness(1.08); }
 #verifyNumber { font-variant-numeric:tabular-nums; }
 @media(prefers-reduced-motion:reduce) { .loading-spinner { animation-duration:1.8s; } }
+
+
+/* ==========================================
+   ADMIN LOGIN ONLY — NAVY, BLUE & GOLD THEME
+   Scoped to .admin-auth-shell so other pages
+   and their existing styles remain unchanged.
+========================================== */
+.admin-auth-shell {
+    background:
+        radial-gradient(circle at 12% 12%, rgba(74, 133, 199, .30), transparent 34%),
+        radial-gradient(circle at 88% 88%, rgba(210, 163, 79, .16), transparent 32%),
+        linear-gradient(145deg, #071d3b 0%, #0b2e59 52%, #102f52 100%);
+}
+
+.admin-auth-shell .admin-auth-card {
+    background: #ffffff;
+    border: 1px solid rgba(210, 163, 79, .55);
+    border-top: 5px solid #d2a34f;
+    box-shadow: 0 24px 70px rgba(0, 10, 28, .30);
+}
+
+.admin-auth-shell .admin-auth-card .eyebrow {
+    color: #b88735;
+}
+
+.admin-auth-shell .admin-auth-card h1 {
+    color: #0b2e59;
+}
+
+.admin-auth-shell .admin-auth-card .muted {
+    color: #68788d;
+}
+
+.admin-auth-shell .admin-auth-card label {
+    color: #17385f;
+}
+
+.admin-auth-shell .admin-auth-card input {
+    background: #edf5ff;
+    border: 1px solid #c8dcf4;
+    color: #152f50;
+}
+
+.admin-auth-shell .admin-auth-card input::placeholder {
+    color: #8297b1;
+}
+
+.admin-auth-shell .admin-auth-card input:focus {
+    background: #f7fbff;
+    border-color: #3478c5;
+    box-shadow: 0 0 0 4px rgba(52, 120, 197, .15);
+}
+
+.admin-auth-shell .admin-auth-card .admin-submit {
+    background: linear-gradient(135deg, #236bb5, #10477f);
+    color: #ffffff;
+    border: 1px solid #1b5b9d;
+    box-shadow: 0 8px 18px rgba(16, 71, 127, .22);
+}
+
+.admin-auth-shell .admin-auth-card .admin-submit:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2d7dcc, #15558f);
+    filter: none;
+}
+
+.admin-auth-shell .admin-auth-card .admin-submit.is-loading {
+    background: linear-gradient(135deg, #174f89, #0b3563);
+}
+
+.admin-auth-shell .admin-auth-card .admin-submit:focus-visible,
+.admin-auth-shell .admin-auth-card input:focus-visible {
+    outline: 3px solid rgba(210, 163, 79, .55);
+    outline-offset: 3px;
+}
+
+.admin-auth-shell .admin-auth-card .back-link {
+    color: #245b91;
+}
+
+.admin-auth-shell .admin-auth-card .back-link:hover {
+    color: #b88735;
+}
+
+.admin-auth-shell .admin-auth-card .auth-footnote {
+    color: #8492a4;
+}
+
+.admin-auth-shell .admin-auth-card .admin-loading {
+    color: #174f89;
+}
+
+.admin-auth-shell .admin-auth-card .loading-spinner {
+    border-color: rgba(35, 107, 181, .20);
+    border-top-color: #236bb5;
+}
