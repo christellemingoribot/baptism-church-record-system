@@ -2398,6 +2398,37 @@ dialog::backdrop {
 @media(prefers-reduced-motion:reduce){.workspace-page{animation:none!important}.app-sidebar .sidebar-nav button{transition:none!important}}
 
 </style>
+
+<style id="premium-certificate-redesign">
+/* Premium navy, ivory and champagne baptism certificate */
+:root{--cert-navy:#102f57;--cert-navy-deep:#091f3d;--cert-gold:#c9a45e;--cert-ivory:#fffdf8;--cert-muted:#69778a}
+.certificate-dialog{background:#f7f9fc;border:1px solid #d8e0eb;border-radius:20px}
+.certificate-paper{padding:24px;background:radial-gradient(circle at 15% 12%,#dce7f5 0,transparent 34%),linear-gradient(145deg,#e9eef5,#d7e0eb)}
+.certificate-design{position:relative;isolation:isolate;overflow:hidden;min-width:720px;color:#24364d;background-color:var(--cert-ivory);background-image:radial-gradient(ellipse at 50% 48%,rgba(201,164,94,.09),transparent 55%),linear-gradient(135deg,rgba(16,47,87,.025),transparent 45%);font-family:Georgia,'Times New Roman',serif;box-shadow:0 18px 44px rgba(9,31,61,.18)}
+.certificate-design:before{content:"";position:absolute;inset:1.25%;border:2px solid var(--cert-navy);z-index:0;pointer-events:none}
+.certificate-design:after{content:"";position:absolute;inset:2%;border:1px solid rgba(201,164,94,.95);z-index:0;pointer-events:none}
+.certificate-border{position:relative;z-index:1;border:0;outline:1px solid rgba(16,47,87,.18);outline-offset:-18px;padding:3.1% 7% 2.8%;background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,253,248,.84));}
+.certificate-border:before{content:"✦";position:absolute;top:3%;left:50%;transform:translateX(-50%);font-size:25px;color:var(--cert-gold)}
+.certificate-border:after{content:"✦";position:absolute;bottom:3%;left:50%;transform:translateX(-50%);font-size:17px;color:var(--cert-gold)}
+.certificate-border .corner{width:38px;height:38px;border-color:var(--cert-gold);opacity:.95}
+.certificate-logo{width:clamp(48px,5.5vw,72px);height:clamp(48px,5.5vw,72px);margin:0 0 5px;filter:none}
+.certificate-church{color:var(--cert-navy);font-family:Arial,sans-serif;font-size:clamp(12px,1.5vw,18px);letter-spacing:3.4px;font-weight:700;margin:0 0 .6%}
+.certificate-kicker{color:#9b783c;font:700 clamp(9px,1vw,12px) Arial,sans-serif;letter-spacing:5px;margin:.4% 0}
+.certificate-design h1{color:var(--cert-navy);font-size:clamp(29px,4.2vw,49px);letter-spacing:9px;margin:0 0 .5%;font-weight:600;text-shadow:none}
+.certificate-rule{width:54%;height:1px;margin:1.1% 0 1.2%;background:linear-gradient(90deg,transparent,var(--cert-gold),transparent)}
+.certificate-body{font-size:clamp(11px,1.3vw,16px);line-height:1.65;color:#33445a;margin:.35% 0}
+.certificate-design h2{color:#123d70;font-size:clamp(22px,3vw,36px);font-style:normal;font-weight:600;letter-spacing:.3px;text-decoration:none;margin:.5% 0 1%;padding:0 12px 4px;border-bottom:1px solid rgba(201,164,94,.8)}
+.certificate-footer{width:86%;margin-top:3.2%;gap:12%;justify-content:space-between}
+.certificate-footer div{width:40%;border-top:1px solid #7d8ba0;padding-top:7px;min-height:34px}
+.certificate-footer span{color:#263c58;font-size:12px;font-style:italic;font-weight:500}
+.certificate-footer small{font:700 9px Arial,sans-serif;color:#718096;letter-spacing:1.4px}
+.certificate-meta-wrap{position:relative;z-index:2;width:86%;display:flex;justify-content:space-between;gap:16px;margin-top:2.1%;padding-top:8px;border-top:1px solid rgba(201,164,94,.55);font:10px Arial,sans-serif;color:#53647a;letter-spacing:.2px}
+.certificate-meta-wrap strong{color:var(--cert-navy);font-weight:700}
+.seal{position:absolute;right:7%;bottom:13%;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff8e8;background:radial-gradient(circle at 35% 30%,#e1c27f,#b18a42 70%,#8a682d);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5),inset 0 0 0 5px rgba(255,255,255,.16),0 5px 12px rgba(30,44,64,.16);font-size:24px}
+.certificate-actions .primary{background:linear-gradient(135deg,#17477d,#0b2a50)}
+@media(max-width:650px){.certificate-paper{padding:12px}.certificate-design{min-width:720px}}
+</style>
+
 </head>
 <body>
 
@@ -2673,7 +2704,6 @@ dialog::backdrop {
                     <span>Certificate No: <strong id="certNumber">—</strong></span>
                     <span>Issued on: <strong id="certIssuedDate">—</strong></span>
                 </div>
-                <div id="certificateQr" class="certificate-qr" aria-label="Certificate verification QR code"></div>
             </div>
         </div>
     </div>
@@ -2697,7 +2727,6 @@ dialog::backdrop {
 
 <div id="toasts" aria-live="polite"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" referrerpolicy="no-referrer"></script>
 <script>
 "use strict";
 
@@ -3392,16 +3421,6 @@ function renderCertificate(record) {
     certificateDesign.style.backgroundRepeat = "no-repeat";
 
     applyCertZoom();
-    const qr = document.getElementById("certificateQr");
-    if (qr) {
-        qr.replaceChildren();
-        const number = String(record.certificateNo || "").trim();
-        if (number && window.QRCode) {
-            new QRCode(qr, { text: `${location.origin}/verify.html?certificate=${encodeURIComponent(number)}`, width: 76, height: 76, colorDark: "#123f75", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
-        } else if (qr) {
-            qr.textContent = number ? "QR library unavailable" : "Certificate number required for QR";
-        }
-    }
 }
 
 function openCertificate(id) {
@@ -3508,8 +3527,23 @@ $("#printCertificate").addEventListener("click", () => {
         .certificate-footer span { display: block; min-height: 5mm; font-size: 10pt; font-style: italic; }
         .certificate-footer small { font: 8pt Arial, sans-serif; letter-spacing: 1px; color: #6f6156; }
         .certificate-issued { font: 9pt Arial, sans-serif; margin: 3mm 0 0; color: #62564d; }
-        .certificate-qr { position:absolute; left:14mm; bottom:13mm; width:22mm; height:22mm; background:#fff; padding:1mm; }
-        .certificate-qr img { width:100%; height:100%; display:block; }
+        .certificate-design:before { inset:1.25%; border:2px solid #102f57; }
+        .certificate-design:after { inset:2%; border:1px solid #c9a45e; }
+        .certificate-border { border:0; outline:1px solid rgba(16,47,87,.18); outline-offset:-18px; padding:9mm 18mm 8mm; background:rgba(255,253,248,.82); }
+        .certificate-border:before { content:"✦"; position:absolute; top:3%; left:50%; transform:translateX(-50%); color:#c9a45e; font-size:20pt; }
+        .certificate-border:after { content:"✦"; position:absolute; bottom:3%; left:50%; transform:translateX(-50%); color:#c9a45e; font-size:13pt; }
+        .certificate-church { color:#102f57; font: bold 14pt Arial,sans-serif; letter-spacing:3px; margin-bottom:2mm; }
+        .certificate-kicker { color:#9b783c; font: bold 9pt Arial,sans-serif; letter-spacing:4px; }
+        #certificateDesign h1 { color:#102f57; font-size:32pt; letter-spacing:8px; font-weight:600; }
+        #certificateDesign h2 { color:#123d70; font-size:24pt; font-style:normal; text-decoration:none; border-bottom:1px solid #c9a45e; padding:0 4mm 1mm; }
+        .certificate-body { color:#33445a; font-size:11pt; line-height:1.6; }
+        .certificate-footer { width:86%; margin-top:7mm; gap:12%; }
+        .certificate-footer div { width:40%; border-top:1px solid #7d8ba0; padding-top:2mm; }
+        .certificate-footer span { color:#263c58; font-size:9pt; font-style:italic; }
+        .certificate-footer small { color:#718096; font: bold 7pt Arial,sans-serif; letter-spacing:1px; }
+        .certificate-meta-wrap { width:86%; display:flex; justify-content:space-between; gap:5mm; margin-top:4mm; padding-top:2mm; border-top:1px solid rgba(201,164,94,.65); color:#53647a; font:7.5pt Arial,sans-serif; }
+        .certificate-meta-wrap strong { color:#102f57; }
+        .seal { right:12mm; bottom:23mm; width:18mm; height:18mm; font-size:18pt; }
     `;
     printWindow.document.open();
     printWindow.document.write(`
