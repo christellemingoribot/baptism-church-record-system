@@ -1,9 +1,0 @@
-BAPTISMAL CERTIFICATE DESIGN UPDATE
-
-- Redesigned the certificate in a modern navy blue, ivory, and champagne-gold theme.
-- Removed the QR code from the live preview and printed/PDF certificate.
-- Removed the QR-code library dependency from the certificate page.
-- Kept the certificate number, issue date, child name, birth date, baptism date, minister, parents, church logo upload, background upload, and print/PDF flow.
-- Kept the existing MongoDB records and application routes unchanged.
-
-To use: extract this ZIP, copy your existing .env file into the project folder, run npm install if needed, then npm start.
