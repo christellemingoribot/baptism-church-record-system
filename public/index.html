@@ -2372,6 +2372,32 @@ dialog::backdrop {
 }
 </style>
 
+<style>
+/* Premium workspace upgrade */
+.app-shell{gap:18px!important;padding:18px!important;background:linear-gradient(135deg,#edf4fc 0%,#f7faff 48%,#eef5ff 100%)!important}
+.app-sidebar{background:linear-gradient(180deg,#082e5d,#124d91 70%,#0b376c)!important;border:1px solid rgba(255,255,255,.12)!important;box-shadow:0 18px 45px rgba(8,46,93,.18)!important}
+.app-sidebar .sidebar-nav button{border-radius:12px!important;transition:transform .22s ease,background .22s ease,box-shadow .22s ease!important}
+.app-sidebar .sidebar-nav button:hover{transform:translateX(4px);background:rgba(255,255,255,.13)!important}
+.app-sidebar .sidebar-nav button.active{background:linear-gradient(100deg,rgba(255,255,255,.22),rgba(255,255,255,.08))!important;box-shadow:inset 3px 0 #e6c47f}
+.app-workspace{min-width:0;border-radius:20px;overflow:hidden;background:rgba(255,255,255,.84);box-shadow:0 18px 50px rgba(25,64,111,.08);border:1px solid #dce8f6}
+.workspace-page{animation:workspaceEnter .36s cubic-bezier(.2,.8,.2,1)}
+@keyframes workspaceEnter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.feature-card,.panel,.stats>div,.report-stat{border-color:#dce8f6!important;box-shadow:0 8px 24px rgba(25,64,111,.06)!important}
+.page-heading h1{color:#103d70!important}
+.upgrade-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}
+.upgrade-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:end}
+.upgrade-form label{display:grid;gap:6px;color:#52657c;font-size:13px;font-weight:650}
+.upgrade-form input,.upgrade-form textarea{width:100%;border:1px solid #d6e2f0;border-radius:10px;padding:11px;background:#fff;color:#172b45}
+.upgrade-table{width:100%;border-collapse:collapse}.upgrade-table th,.upgrade-table td{padding:11px;border-bottom:1px solid #e7eef7;text-align:left;font-size:13px}.upgrade-table th{color:#52657c;background:#f4f8fd}
+.upgrade-pill{display:inline-flex;padding:5px 9px;border-radius:999px;background:#e7f1ff;color:#174e87;font-size:11px;font-weight:750}
+.upgrade-actions{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+.upgrade-muted{color:#6c7f95;font-size:13px}
+.upgrade-alert{padding:12px 14px;border-radius:12px;background:#eef6ff;border:1px solid #d4e7fb;color:#174e87;margin:12px 0}
+#upgradeNotice{position:relative;margin:0 0 16px;padding:13px 16px;border:1px solid #d9e8f8;border-radius:14px;background:#f4f9ff;color:#174e87}
+@media(max-width:850px){.app-shell{padding:8px!important}.upgrade-grid{grid-template-columns:1fr}.upgrade-form{grid-template-columns:1fr}.app-workspace{border-radius:14px}}
+@media(prefers-reduced-motion:reduce){.workspace-page{animation:none!important}.app-sidebar .sidebar-nav button{transition:none!important}}
+
+</style>
 </head>
 <body>
 
@@ -2647,6 +2673,7 @@ dialog::backdrop {
                     <span>Certificate No: <strong id="certNumber">—</strong></span>
                     <span>Issued on: <strong id="certIssuedDate">—</strong></span>
                 </div>
+                <div id="certificateQr" class="certificate-qr" aria-label="Certificate verification QR code"></div>
             </div>
         </div>
     </div>
@@ -2670,6 +2697,7 @@ dialog::backdrop {
 
 <div id="toasts" aria-live="polite"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" referrerpolicy="no-referrer"></script>
 <script>
 "use strict";
 
@@ -3364,6 +3392,16 @@ function renderCertificate(record) {
     certificateDesign.style.backgroundRepeat = "no-repeat";
 
     applyCertZoom();
+    const qr = document.getElementById("certificateQr");
+    if (qr) {
+        qr.replaceChildren();
+        const number = String(record.certificateNo || "").trim();
+        if (number && window.QRCode) {
+            new QRCode(qr, { text: `${location.origin}/verify.html?certificate=${encodeURIComponent(number)}`, width: 76, height: 76, colorDark: "#123f75", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+        } else if (qr) {
+            qr.textContent = number ? "QR library unavailable" : "Certificate number required for QR";
+        }
+    }
 }
 
 function openCertificate(id) {
@@ -3470,6 +3508,8 @@ $("#printCertificate").addEventListener("click", () => {
         .certificate-footer span { display: block; min-height: 5mm; font-size: 10pt; font-style: italic; }
         .certificate-footer small { font: 8pt Arial, sans-serif; letter-spacing: 1px; color: #6f6156; }
         .certificate-issued { font: 9pt Arial, sans-serif; margin: 3mm 0 0; color: #62564d; }
+        .certificate-qr { position:absolute; left:14mm; bottom:13mm; width:22mm; height:22mm; background:#fff; padding:1mm; }
+        .certificate-qr img { width:100%; height:100%; display:block; }
     `;
     printWindow.document.open();
     printWindow.document.write(`
@@ -3506,6 +3546,7 @@ $("#printCertificate").addEventListener("click", () => {
             window.onload = function () { window.focus(); window.print(); };
         <\/script>
         
+
 
 
 </body></html>`);
@@ -3648,6 +3689,49 @@ console.log("Baptism Church Record System — backend-only edition — loaded.")
   document.getElementById('settingsLogout')?.addEventListener('click',()=>performLogout());
   renderRecent();
 })();
+</script>
+<script id="complete-upgrade-modules">
+/* Additional secured modules: schedule, audit trail, notifications, backup/restore. */
+(() => {
+  const shell=document.querySelector('.app-shell');
+  const sidebar=document.querySelector('.app-sidebar nav');
+  const main=document.querySelector('.app-workspace main');
+  if(!shell||!sidebar||!main)return;
+  const role=()=>document.getElementById('userRoleText')?.textContent?.toLowerCase().includes('admin');
+  const api=async(url,options={})=>{const response=await fetch(url,{credentials:'same-origin',...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});const data=options.raw?response:await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'Request failed');return data;};
+  const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const date=v=>v?new Date(v).toLocaleString():'';
+  const pages={};
+  function addPage(id,label,icon,html,adminOnly=false){
+    const button=document.createElement('button');button.type='button';button.dataset.upgradePage=id;button.innerHTML=`<span class="nav-icon">${icon}</span>${label}`;if(adminOnly&&!role())button.hidden=true;sidebar.append(button);
+    const section=document.createElement('section');section.className='workspace-page';section.dataset.upgradeContent=id;section.innerHTML=html;main.append(section);pages[id]=section;
+  }
+  addPage('schedule','Baptism Calendar','▦',`<div class="page-heading"><div><h1>Baptism Scheduling</h1><p>Manage upcoming baptism ceremonies and important dates.</p></div><button class="secondary" id="scheduleRefresh">↻ Refresh</button></div><div class="feature-card" id="scheduleCreateCard"><h3>Add a ceremony schedule</h3><form id="scheduleForm" class="upgrade-form"><label>Event title<input name="title" required maxlength="120" placeholder="Baptism ceremony"></label><label>Date<input name="date" type="date" required></label><label>Time<input name="time" type="time"></label><label>Notes<input name="notes" maxlength="500" placeholder="Optional details"></label><button class="primary" type="submit">＋ Save schedule</button></form></div><div class="feature-card"><h3>Upcoming and saved schedules</h3><div id="scheduleRows" class="upgrade-muted">Loading schedules…</div></div>`);
+  addPage('activity','Activity Logs','◷',`<div class="page-heading"><div><h1>Administrator Activity</h1><p>Trace record and system changes performed through secured admin actions.</p></div><button class="secondary" id="auditRefresh">↻ Refresh</button></div><div class="feature-card"><div id="auditRows" class="upgrade-muted">Loading activity history…</div></div>`,true);
+  addPage('backup','Backup & Restore','⇩',`<div class="page-heading"><div><h1>Database Backup & Restore</h1><p>Export baptism records or add records from a previous system backup.</p></div></div><div class="upgrade-grid"><div class="feature-card"><div class="feature-icon">⇩</div><h3>Download backup</h3><p class="upgrade-muted">Creates a JSON backup of baptism records. Login accounts and session data are excluded.</p><button class="primary" id="downloadBackup">Download records backup</button></div><div class="feature-card"><div class="feature-icon">⇧</div><h3>Restore backup</h3><p class="upgrade-muted">Restore is additive. Existing records will not be deleted or overwritten.</p><label>Select JSON backup<input id="restoreFile" type="file" accept="application/json,.json"></label><button class="secondary" id="restoreBackup" disabled>Import backup records</button></div></div><div id="backupMessage" aria-live="polite"></div><div class="upgrade-alert"><strong>Important:</strong> Download a fresh backup before importing. Keep backup files in a private, secure location.</div>`,true);
+  addPage('notifications','Notifications','♢',`<div class="page-heading"><div><h1>Notification Center</h1><p>Recent updates from the baptism registry.</p></div><button class="secondary" id="notificationRefresh">↻ Refresh</button></div><div class="feature-card"><div id="notificationRows" class="upgrade-muted">Loading notifications…</div></div>`);
+  const notice=document.createElement('div');notice.id='upgradeNotice';notice.innerHTML='<strong>System update</strong> · New scheduling, activity history, notifications, and safe backup tools are available.';main.prepend(notice);
+  const navButtons=[...sidebar.querySelectorAll('[data-page]')];
+  function show(id){main.querySelectorAll('[data-page-content]').forEach(x=>x.classList.remove('active'));main.querySelectorAll('[data-upgrade-content]').forEach(x=>x.classList.toggle('active',x.dataset.upgradeContent===id));navButtons.forEach(x=>x.classList.toggle('active',x.dataset.page===id));sidebar.querySelectorAll('[data-upgrade-page]').forEach(x=>x.classList.toggle('active',x.dataset.upgradePage===id));notice.hidden=id!=='dashboard';if(id==='schedule')loadSchedules();if(id==='activity')loadAudit();if(id==='backup'&&!role())show('dashboard');if(id==='notifications')loadNotifications();window.scrollTo({top:0,behavior:'smooth'});}
+  sidebar.addEventListener('click',e=>{const b=e.target.closest('[data-upgrade-page]');if(b)show(b.dataset.upgradePage);});
+  sidebar.addEventListener('click',e=>{if(e.target.closest('[data-page]'))main.querySelectorAll('[data-upgrade-content]').forEach(x=>x.classList.remove('active'));},true);
+  function table(rows,headers,render){return rows.length?`<div style="overflow:auto"><table class="upgrade-table"><thead><tr>${headers.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(render).join('')}</tbody></table></div>`:'<p class="upgrade-muted">No entries found.</p>';}
+  async function loadSchedules(){const box=document.getElementById('scheduleRows');try{const rows=await api('/api/admin/schedules');box.innerHTML=table(rows,['Event','Date','Time','Notes',''],r=>`<tr><td><strong>${safe(r.title)}</strong></td><td>${safe(r.date)}</td><td>${safe(r.time||'—')}</td><td>${safe(r.notes||'—')}</td><td>${role()?`<button class="table-action del" data-delete-schedule="${safe(r._id)}">Delete</button>`:''}</td></tr>`);}catch(e){box.textContent=e.message;}}
+  document.getElementById('scheduleRefresh').onclick=loadSchedules;
+  document.getElementById('scheduleForm').addEventListener('submit',async e=>{e.preventDefault();if(!role())return;const data=Object.fromEntries(new FormData(e.currentTarget));try{await api('/api/admin/schedules',{method:'POST',body:JSON.stringify(data)});e.currentTarget.reset();await loadSchedules();}catch(err){alert(err.message);}});
+  document.getElementById('scheduleRows').addEventListener('click',async e=>{const b=e.target.closest('[data-delete-schedule]');if(!b||!role()||!confirm('Delete this schedule?'))return;try{await api('/api/admin/schedules/'+encodeURIComponent(b.dataset.deleteSchedule),{method:'DELETE'});loadSchedules();}catch(err){alert(err.message);}});
+  async function loadAudit(){const box=document.getElementById('auditRows');try{const rows=await api('/api/admin/audit');box.innerHTML=table(rows,['Action','Administrator','Details','Date'],r=>`<tr><td><span class="upgrade-pill">${safe(r.action)}</span></td><td>${safe(r.actor)}</td><td>${safe(JSON.stringify(r.details||{}))}</td><td>${safe(date(r.createdAt))}</td></tr>`);}catch(e){box.textContent=e.message;}}
+  document.getElementById('auditRefresh').onclick=loadAudit;
+  async function loadNotifications(){const box=document.getElementById('notificationRows');try{const rows=await api('/api/admin/notifications');box.innerHTML=rows.length?rows.map(r=>`<div class="settings-row"><div><strong>${safe(r.title)}</strong><small>${safe(r.message)} · ${safe(date(r.createdAt))}</small></div><span class="upgrade-pill">Update</span></div>`).join(''):'<p class="upgrade-muted">No recent activity yet.</p>';}catch(e){box.textContent=e.message;}}
+  document.getElementById('notificationRefresh').onclick=loadNotifications;
+  document.getElementById('downloadBackup').onclick=async()=>{try{const response=await fetch('/api/admin/backup',{credentials:'same-origin'});if(!response.ok){const d=await response.json();throw Error(d.error||'Backup failed');}const blob=await response.blob(),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='baptism-records-backup.json';a.click();URL.revokeObjectURL(url);document.getElementById('backupMessage').innerHTML='<p class="upgrade-alert">Backup downloaded successfully.</p>';}catch(e){document.getElementById('backupMessage').textContent=e.message;}};
+  const restoreInput=document.getElementById('restoreFile'),restoreButton=document.getElementById('restoreBackup');restoreInput.onchange=()=>restoreButton.disabled=!restoreInput.files?.[0];
+  restoreButton.onclick=async()=>{if(!role()||!restoreInput.files?.[0])return;if(!confirm('Import records additively? Existing records will remain unchanged.'))return;try{const payload=JSON.parse(await restoreInput.files[0].text());const result=await api('/api/admin/restore',{method:'POST',body:JSON.stringify(payload)});document.getElementById('backupMessage').innerHTML=`<p class="upgrade-alert">${safe(result.message)} Imported: ${safe(result.imported)} record(s).</p>`;restoreInput.value='';restoreButton.disabled=true;}catch(e){document.getElementById('backupMessage').textContent=e.message;}};
+  // Add a compact notification shortcut to the sidebar and ensure role-only modules stay hidden for users.
+  if(!role()){sidebar.querySelectorAll('[data-upgrade-page="activity"],[data-upgrade-page="backup"]').forEach(b=>b.hidden=true);document.getElementById('scheduleCreateCard').hidden=true;}
+  if(role())loadAudit();
+})();
+
 </script>
 </body>
 </html>

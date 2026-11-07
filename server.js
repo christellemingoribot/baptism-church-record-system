@@ -22,6 +22,8 @@ const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
 
 let records;
 let users;
+let auditLogs;
+let schedules;
 let mongoClient;
 let openai = null;
 
@@ -31,7 +33,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Middleware
-app.use(express.json({ limit: "100kb" }));
+app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 // Session configuration
@@ -110,6 +112,23 @@ function adminOnly(req, res, next) {
     }
 
     next();
+}
+
+// Record administrative actions without storing passwords or session secrets.
+async function writeAudit(req, action, details = {}) {
+    if (!auditLogs) return;
+    try {
+        await auditLogs.insertOne({
+            action,
+            actor: req.session?.user?.email || req.session?.user?.name || "Administrator",
+            role: req.session?.role || "unknown",
+            details,
+            createdAt: new Date(),
+            ip: clean(req.ip, 80)
+        });
+    } catch (error) {
+        console.error("Audit log write failed:", error.message);
+    }
 }
 
 // Create login session
@@ -471,6 +490,7 @@ app.post("/api/records", adminOnly, async (req, res) => {
         }
 
         const result = await records.insertOne(item);
+        await writeAudit(req, "record.created", { recordId: result.insertedId.toString(), name: `${item.firstName} ${item.lastName}` });
 
         return res.status(201).json({
             ...item,
@@ -538,6 +558,7 @@ app.put("/api/records/:id", adminOnly, async (req, res) => {
                 error: "Record not found."
             });
         }
+        await writeAudit(req, "record.updated", { recordId: req.params.id, name: `${update.firstName} ${update.lastName}` });
 
         return res.json({ ok: true });
 
@@ -572,6 +593,7 @@ app.delete("/api/records/:id", adminOnly, async (req, res) => {
                 error: "Record not found."
             });
         }
+        await writeAudit(req, "record.deleted", { recordId: req.params.id });
 
         return res.json({ ok: true });
 
@@ -584,6 +606,122 @@ app.delete("/api/records/:id", adminOnly, async (req, res) => {
     }
 });
 
+
+// ==========================================
+// ADMIN TOOLS: AUDIT, SCHEDULING, BACKUP
+// ==========================================
+app.get("/api/admin/audit", adminOnly, async (req, res) => {
+    try {
+        const rows = await auditLogs.find({}).sort({ createdAt: -1 }).limit(200).toArray();
+        res.json(rows);
+    } catch (error) {
+        console.error("Audit retrieval error:", error);
+        res.status(500).json({ error: "Unable to load activity history." });
+    }
+});
+
+app.get("/api/admin/notifications", signedIn, async (req, res) => {
+    try {
+        const rows = await auditLogs.find({}).sort({ createdAt: -1 }).limit(15).toArray();
+        res.json(rows.map(row => ({
+            id: row._id,
+            title: row.action.replace(/^record\./, "Baptism record ").replace(/\./g, " "),
+            message: row.details?.name || "A registry activity was recorded.",
+            createdAt: row.createdAt
+        })));
+    } catch (error) {
+        res.status(500).json({ error: "Unable to load notifications." });
+    }
+});
+
+app.get("/api/admin/schedules", signedIn, async (req, res) => {
+    try {
+        const rows = await schedules.find({}).sort({ date: 1 }).limit(500).toArray();
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: "Unable to load baptism schedules." });
+    }
+});
+
+app.post("/api/admin/schedules", adminOnly, async (req, res) => {
+    try {
+        const item = {
+            title: clean(req.body.title, 120),
+            date: clean(req.body.date, 20),
+            time: clean(req.body.time, 20),
+            notes: clean(req.body.notes, 500),
+            createdAt: new Date(),
+            createdBy: req.session?.user?.email || "Administrator"
+        };
+        if (!item.title || !/^\d{4}-\d{2}-\d{2}$/.test(item.date)) {
+            return res.status(400).json({ error: "A title and valid date are required." });
+        }
+        const result = await schedules.insertOne(item);
+        await writeAudit(req, "schedule.created", { title: item.title, date: item.date });
+        res.status(201).json({ ...item, _id: result.insertedId });
+    } catch (error) {
+        res.status(500).json({ error: "Unable to save the schedule." });
+    }
+});
+
+app.delete("/api/admin/schedules/:id", adminOnly, async (req, res) => {
+    if (!ObjectId.isValid(req.params.id)) return res.status(400).json({ error: "Invalid schedule ID." });
+    const result = await schedules.deleteOne({ _id: new ObjectId(req.params.id) });
+    if (!result.deletedCount) return res.status(404).json({ error: "Schedule not found." });
+    await writeAudit(req, "schedule.deleted", { scheduleId: req.params.id });
+    res.json({ ok: true });
+});
+
+// JSON backup contains baptism records only; user credentials and sessions are excluded.
+app.get("/api/admin/backup", adminOnly, async (req, res) => {
+    try {
+        const data = await records.find({}).toArray();
+        await writeAudit(req, "database.backup", { recordCount: data.length });
+        res.setHeader("Content-Type", "application/json");
+        res.setHeader("Content-Disposition", `attachment; filename=baptism-records-backup-${new Date().toISOString().slice(0,10)}.json`);
+        res.send(JSON.stringify({ format: "baptism-records-backup-v1", exportedAt: new Date().toISOString(), records: data }, null, 2));
+    } catch (error) {
+        res.status(500).json({ error: "Unable to create backup." });
+    }
+});
+
+// Restore is intentionally additive: existing records are never deleted or overwritten.
+app.post("/api/admin/restore", adminOnly, async (req, res) => {
+    try {
+        const payload = req.body;
+        if (!payload || payload.format !== "baptism-records-backup-v1" || !Array.isArray(payload.records) || payload.records.length > 10000) {
+            return res.status(400).json({ error: "Invalid backup file format or record count." });
+        }
+        const docs = payload.records.map(source => {
+            const item = {};
+            for (const key of ["firstName","lastName","birthDate","placeOfBirth","gender","fatherName","motherName","godfatherName","godmotherName","baptismDate","parents","minister","church","certificateNo","notes"]) {
+                if (source[key] !== undefined) item[key] = clean(source[key], key === "notes" ? 1000 : 220);
+            }
+            item.createdAt = new Date();
+            item.updatedAt = new Date();
+            return item;
+        }).filter(item => item.firstName && item.lastName && item.baptismDate);
+        if (!docs.length) return res.status(400).json({ error: "No valid baptism records were found in this backup." });
+        const result = await records.insertMany(docs, { ordered: false });
+        await writeAudit(req, "database.restore", { imported: result.insertedCount });
+        res.json({ ok: true, imported: result.insertedCount, message: "Records restored additively. Existing records were not changed." });
+    } catch (error) {
+        console.error("Restore error:", error);
+        res.status(500).json({ error: "Unable to restore this backup." });
+    }
+});
+
+app.get("/api/public/verify/:certificateNo", async (req, res) => {
+    try {
+        const certificateNo = clean(req.params.certificateNo, 80);
+        if (!certificateNo) return res.status(400).json({ valid: false, error: "Certificate number is required." });
+        const record = await records.findOne({ certificateNo });
+        if (!record) return res.json({ valid: false });
+        res.json({ valid: true, certificateNo: record.certificateNo, firstName: record.firstName, lastName: record.lastName, baptismDate: record.baptismDate, church: record.church });
+    } catch (error) {
+        res.status(500).json({ valid: false, error: "Verification is temporarily unavailable." });
+    }
+});
 
  // ==========================================
  // AI-ASSISTED REGISTRY SUMMARY
@@ -771,9 +909,13 @@ async function start() {
 
     records = database.collection("baptism_records");
     users = database.collection("system_users");
+    auditLogs = database.collection("admin_audit_logs");
+    schedules = database.collection("baptism_schedules");
 
     await records.createIndex({ baptismDate: -1 });
     await users.createIndex({ email: 1 }, { unique: true });
+    await auditLogs.createIndex({ createdAt: -1 });
+    await schedules.createIndex({ date: 1 });
 
     if (process.env.OPENAI_API_KEY) {
         openai = new OpenAI({

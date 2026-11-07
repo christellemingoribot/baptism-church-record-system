@@ -32,3 +32,22 @@ Keep `.env` private and do not upload it to GitHub. The downloadable project int
 ## Responsive UI and logo update
 
 The public login/dashboard, administrator sign-in, tables, forms, dialogs, and certificate controls include responsive layout rules for desktop, tablet, and mobile. The logo is stored at `public/logo.png` and the browser-tab icon at `public/favicon.png`. Keep both files when deploying. The project archive does not include `.env`, `.git`, or `node_modules`.
+
+## Complete system enhancements
+
+- Modern navy/blue responsive workspace styling and page transitions.
+- Baptism ceremony scheduling. Administrators can create/delete schedules; signed-in users can view them.
+- Administrator activity history for baptism record create/update/delete, schedule changes, and backup/restore actions.
+- Notification center based on recent registry activity.
+- Admin-only JSON backup and additive restore. Restore never deletes or overwrites existing baptism records.
+- Public certificate verification at `/verify.html?certificate=CERTIFICATE_NUMBER` and a QR code on generated certificates (the QR renderer is loaded from cdnjs, so internet access is required for QR rendering).
+- Existing records remain in `baptism_records`; new supporting collections are `admin_audit_logs` and `baptism_schedules`.
+
+### Safe upgrade notes
+
+1. Keep the existing `.env` values on your own computer. The distributed ZIP intentionally omits `.env`, `.git`, and `node_modules`.
+2. Back up your MongoDB database before deploying any application update.
+3. The backup/restore page exports baptism records only. It intentionally excludes user password hashes and session data. Restore is additive to avoid replacing existing records.
+4. Admin-only functions are enforced by server middleware, not just by hidden interface controls.
+5. If a real credential was included in an uploaded archive or committed to a repository, rotate it before production deployment.
+6. After extracting the updated project, run `npm install`, then `npm start`. Keep your current `MONGODB_URI`, `DB_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD_HASH` values in your local `.env`.

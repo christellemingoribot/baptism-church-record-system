@@ -550,3 +550,5 @@
 @media (max-width: 380px) {
   .certificate-actions { grid-template-columns: minmax(0, 1fr); }
 }
+.certificate-qr{position:absolute;left:14mm;bottom:13mm;width:22mm;height:22mm;background:#fff;padding:1mm;display:grid;place-items:center;z-index:2}
+.certificate-qr img{width:100%;height:100%;display:block}
